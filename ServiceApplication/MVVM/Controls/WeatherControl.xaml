@@ -1,0 +1,28 @@
+﻿<UserControl x:Class="ServiceApplication.MVVM.Controls.WeatherControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ServiceApplication.MVVM.Controls"
+             mc:Ignorable="d" 
+             >
+
+    <!--Weather section-->
+    <StackPanel Orientation="Horizontal">
+        <!-- Mappa genom Binding till Condition i backend. -->
+        <TextBlock FontFamily="{StaticResource FontAwesome-Regular}" 
+                   Text="{Binding Condition, FallbackValue=&#xe137;}" 
+                   FontSize="50" 
+                   Foreground="#cccccc"/>
+        <TextBlock FontSize="24" 
+                   Margin="15 10 0 0"
+                   Foreground="#cccccc">
+                <!-- Mappa genom Binding till Temperature i backend. -->
+                 <Run Text="{Binding Temperature, FallbackValue=--}" />
+                 <Run Text="°C" 
+                      FontSize="17" 
+                      BaselineAlignment="Center"/>
+        </TextBlock>
+    </StackPanel>
+    
+</UserControl>

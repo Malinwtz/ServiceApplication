@@ -11,10 +11,14 @@
     <StackPanel HorizontalAlignment="Center" >
         <!-- Binding till datum som ska uppdateras automatiskt -->
         <TextBlock Text="{Binding CurrentTime, FallbackValue=--:--}" 
-                 Foreground="#f5f5f5" HorizontalAlignment="Center" 
-                 FontSize="92" Margin="0 -25 0 0"/>
-        <TextBlock Text="{Binding CurrentDate}" Foreground="#aaaaaa" 
-                 HorizontalAlignment="Center" FontSize="22"/>
+                   Foreground="#f5f5f5" 
+                   HorizontalAlignment="Center" 
+                   FontSize="92" 
+                   Margin="0 -25 0 0"/>
+        <TextBlock Text="{Binding CurrentDate}" 
+                   Foreground="#aaaaaa" 
+                   HorizontalAlignment="Center" 
+                   FontSize="22"/>
     </StackPanel>
 
 </UserControl>
