@@ -1,0 +1,88 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:models="clr-namespace:ServiceApplication.MVVM.Models">
+
+    <!-- Lägg till en referens till denna ResourceDictionary i App.xaml -> bygg projektet. -->
+
+
+    <!-- 
+ Styleelement. TargetType: Elementet som stylingen ska associeras till. -->
+    <Style x:Key="DeviceTile" TargetType="Button">
+        <Setter Property="Background" Value="#3f3f40"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Width" Value="210"/>
+        <Setter Property="Height" Value="200"/>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Opacity" Value="0.80"/>
+        <!-- Effect som gör att det blir en skuggeffekt runt controlen. -->
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect ShadowDepth="1" BlurRadius="15" Opacity="0.75"/>
+            </Setter.Value>
+        </Setter>
+        <!-- För att ta bort hovereffekten -->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <!-- Elementet vi vill manipulera-->
+                    <!-- TemplateBinding: vi binder färgen där nere till färgen vi har definierats ovan. -->
+                    <Border x:Name="buttonBorder" 
+                         Background="{TemplateBinding Background}" 
+                         CornerRadius="10" BorderBrush="Transparent">
+                        <!-- ContentPresenter är innehållet. -->
+                        <ContentPresenter Content="{Binding}"
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center">
+                            <!-- Hur innehållet ska se ut. -->
+                            <ContentPresenter.ContentTemplate>
+                                <!-- Binder till datatypen DeviceItem. 
+                             Måste lägga till namespace för att den ska hitta DeviceItem i MVVM.Models. 
+                             Måste även builda programmet för att det ska fungera. -->
+                                <DataTemplate DataType="{x:Type models:DeviceItem}">
+
+                                    <!-- Detta behöver vi ändra på om vi ska använda mallen till andra knappar. -->
+                                    <Grid>
+                                        <StackPanel>
+                                            <TextBlock FontFamily="{StaticResource FontAwesome-Regular}" 
+                                                    Text="{Binding Icon, FallbackValue=&#xf2db;}"
+                                                    FontSize="80"
+                                                    Foreground="#ffffff"
+                                                    Margin="0 0 0 20"/>
+                                            <TextBlock Text="{Binding Placement, FallbackValue=Unknown}" 
+                                                    HorizontalAlignment="Center"
+                                                    Foreground="#cccccc"/>
+                                        </StackPanel>
+                                    </Grid>
+
+
+                                </DataTemplate>
+                            </ContentPresenter.ContentTemplate>
+                        </ContentPresenter>
+                    </Border>
+
+                    <!-- Triggerdel -->
+                    <ControlTemplate.Triggers>
+                        <!-- Vi vill trigga när elementet är intryckt/klickat på -->
+                        <Trigger Property="IsPressed" Value="True">
+                            <!-- buttonBorder är elementet som kommer att ändras. I det här fallet blir bakgrunden en annan färg. -->
+                            <Setter TargetName="buttonBorder"  
+                                 Property="Background" Value="#7a7a7a" />
+                        </Trigger>
+                        <!-- En ny trigger som ändrar bakgrundsfärg beroende på IsActive -->
+                        <DataTrigger Binding="{Binding IsActive}" 
+                                  Value="true">
+                            <Setter TargetName="buttonBorder" 
+                                 Property="Background" Value="#7a7a7a" />
+                        </DataTrigger>
+
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+
+</ResourceDictionary>
