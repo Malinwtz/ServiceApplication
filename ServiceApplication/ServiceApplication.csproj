@@ -56,7 +56,6 @@
   <ItemGroup>
     <Folder Include="MVVM\ViewModels\" />
     <Folder Include="MVVM\Views\" />
-    <Folder Include="Resources\FontDictionaries\" />
   </ItemGroup>
 
 </Project>
