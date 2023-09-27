@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:ServiceApplication.MVVM.Controls"
              mc:Ignorable="d" 
              >
+    
     <Button Style="{StaticResource DeviceTile}" />
     
 </UserControl>

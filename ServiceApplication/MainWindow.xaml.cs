@@ -28,9 +28,6 @@ namespace ServiceApplication
             // Kopplar listan Devices till frontendlistan
             DeviceList.ItemsSource = Devices;
 
-            // this.WindowState = WindowState.Maximized; //startas upp i helskärmsläge, har man flera skärmar kan den startas upp på annan skärm än den primära
-            // this.WindowStartupLocation = WindowStartupLocation.CenterOwner; // för att starta programmet på den primära skärmen
-
         }
 
 

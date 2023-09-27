@@ -9,7 +9,9 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         MouseDown="Window_MouseDown"
-        Title="Service Application" Height="720" Width="1280">
+        Title="Service Application" Height="720" Width="1280"
+        >
+    
     <Grid>
 
         <!-- Sökväg till bakgrundsbilden, fyller ut hela utrymmet -->
@@ -31,7 +33,7 @@
                 <!-- Definiera kolumnerna i griden i första raden -->
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
-                    <!-- Behöver inte definiera upp eftersom de atomatiskt blir 1 fraction (1*). -->
+                     <!--Behöver inte definiera upp eftersom de atomatiskt blir 1 fraction (1*).--> 
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
@@ -69,14 +71,16 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
 
-                        <!-- Nedan vad som ska skrivas ut på vyn. Här använder vi oss av controls.DeviceTileControl. -->
+                         <!--Nedan vad som ska skrivas ut på vyn. Här använder vi oss av controls.DeviceTileControl.--> 
                         <controls:DeviceTileControl />
 
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
+                
             </ItemsControl>
 
 
         </Grid>
+        
     </Grid>
 </Window>
