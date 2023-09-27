@@ -21,6 +21,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Remove="Resources\FontDictionaries\FontAwesomeDictionary.xaml" />
+    <Page Remove="Resources\Styles\DeviceTileDictionary.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Assets\Fonts\fa-brands-400.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -51,11 +56,21 @@
     <Content Include="Assets\Images\background.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\FontDictionaries\FontAwesomeDictionary.xaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Styles\DeviceTileDictionary.xaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="MVVM\ViewModels\" />
     <Folder Include="MVVM\Views\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
 </Project>

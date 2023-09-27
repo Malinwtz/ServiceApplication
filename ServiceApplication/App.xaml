@@ -4,6 +4,13 @@
              xmlns:local="clr-namespace:ServiceApplication"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="./Resources/FontDictionaries/FontAwesomeDictionary.xaml" />
+                <ResourceDictionary Source="./Resources/Styles/DeviceTileDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
     </Application.Resources>
 </Application>
