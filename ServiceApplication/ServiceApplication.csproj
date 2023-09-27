@@ -54,7 +54,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="MVVM\Controls\" />
     <Folder Include="MVVM\ViewModels\" />
     <Folder Include="MVVM\Views\" />
     <Folder Include="Resources\" />
