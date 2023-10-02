@@ -1,0 +1,36 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:viewModels="clr-namespace:D9ServiceApplication.MVVM.ViewModel"
+                    xmlns:view="clr-namespace:D9ServiceApplication.MVVM.Views">
+
+
+
+
+
+    <!-- När jag använder mig av mig datatype: HomeViewModel så ska HomeView laddas in. -->
+    <!--    <DataTemplate DataType="{x:Type viewModels:HomeViewModel}">
+        <view:HomeView />
+    </DataTemplate>
+
+
+    -->
+    <!-- När jag använder mig av mig datatype: SettingsViewModel så ska SettingsView laddas in. -->
+    <!--    <DataTemplate DataType="{x:Type viewModels:SettingsViewModel}">
+        <view:SettingsView />
+    </DataTemplate>-->
+
+
+</ResourceDictionary>
+
+
+
+<!-- Denna Dictionary tar hand om kopplingen mellan ViewModel och View och gör så 
+    att kopplingen till CurrentViewModel fungerar.
+    Behöver ha tillgång till två olika namespace för att hitta views och viewmodels:
+    xmlns:viewModels="clr-namespace:D9ServiceApplication.MVVM.ViewModel
+    xmlns:view="clr-namespace:D9ServiceApplication.MVVM.Views
+    Efter datatemplate - gör en build för att det ska kopplas ihop.
+    
+    Nu måste denna dictionary läggas till i App.xaml för att denna sida ska köras. 
+    
+    -->
