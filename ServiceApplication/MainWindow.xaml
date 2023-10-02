@@ -5,8 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ServiceApplication"
         xmlns:controls="clr-namespace:ServiceApplication.MVVM.Controls"
+        xmlns:viewmodels="clr-namespace:ServiceApplication.MVVM.ViewModels"
+        xmlns:views="clr-namespace:ServiceApplication.MVVM.Views"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
         WindowStyle="None"
         Title="Service Application" Height="720" Width="1280"
         >
@@ -16,7 +19,7 @@
         <!-- Sökväg till bakgrundsbilden, fyller ut hela utrymmet -->
         <Image Source="Assets/Images/background.jpg" Stretch="Fill" />
 
-        <!--<ContentControl Content="{Binding CurrentViewModel}">
+        <ContentControl Content="{Binding CurrentViewModel}">
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
                     <views:HomeView/>
@@ -25,8 +28,7 @@
                     <views:SettingsView/>
                 </DataTemplate>
             </ContentControl.Resources>
-        </ContentControl>-->
-        <!--måste veta HUR sidan ska renderas ut-->
+        </ContentControl>
 
 
     </Grid>
@@ -38,66 +40,4 @@
     height 800-->
 
 
-
-<!-- Innehållet på sidan --><!--
-<Grid Margin="40">
-    --><!-- Definiera raderna --><!--
-    <Grid.RowDefinitions>
-        <RowDefinition Height="auto"/>
-        <RowDefinition Height="*"/>
-    </Grid.RowDefinitions>
-
-    --><!-- Grid som placeras i den första raden --><!--
-    <Grid Grid.Row="0" >
-        --><!-- Definiera kolumnerna i griden i första raden --><!--
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            --><!--Behöver inte definiera upp eftersom de atomatiskt blir 1 fraction (1*).--><!--
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-
-        --><!-- Weather section control/partial. Bygg projektet för att hitta namespace --><!--
-        <controls:WeatherControl Grid.Column="0"/>
-
-        --><!-- DateTime section control/partial --><!--
-        <controls:DateTimeControl Grid.Column="1" />
-
-        --><!-- Settings section --><!--
-        <Button Grid.Column="2" 
-                        FontFamily="{StaticResource FontAwesome-Regular}" 
-                        Content="&#xf142;" FontSize="40" 
-                        Background="Transparent" Foreground="#cccccc" 
-                        HorizontalAlignment="Right" 
-                        VerticalAlignment="Top" 
-                        BorderThickness="0"/>
-    </Grid>
-
-
-    --><!-- Lista med devices -->
-    <!-- Bindning till listan i backend för att listan ska kunna visas --><!--
-    <ItemsControl x:Name="DeviceList" 
-                          ItemsSource="{Binding Devices}" 
-                          Grid.Row="1" Margin="0 20 0 0">
-
-        <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-                <WrapPanel HorizontalAlignment="Center" 
-                                   VerticalAlignment="Center"/>
-            </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-
-                --><!--Nedan vad som ska skrivas ut på vyn. Här använder vi oss av controls.DeviceTileControl.--><!--
-                <controls:DeviceTileControl />
-
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-
-    </ItemsControl>
-
-
-</Grid>-->
         

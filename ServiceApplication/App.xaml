@@ -9,6 +9,9 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="./Resources/FontDictionaries/FontAwesomeDictionary.xaml" />
                 <ResourceDictionary Source="./Resources/Styles/DeviceTileDictionary.xaml"/>
+                <ResourceDictionary Source="./Resources/Styles/ButtonsDictionary.xaml"/>
+                <ResourceDictionary Source="./Resources/Styles/WeatherSectionDictionary.xaml"/>
+                <ResourceDictionary Source="./Resources/Styles/DateAndTimeSectionDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 

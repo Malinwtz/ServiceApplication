@@ -65,7 +65,7 @@
                     Style="{StaticResource SettingsButton}" />
         </Grid>
 
-        <!-- Content section --> §
+        <!-- Content section --> 
         <ItemsControl Grid.Row="1">
 
         </ItemsControl>
