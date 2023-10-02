@@ -26,7 +26,7 @@ namespace ServiceApplication
             //Denna mappning behövs för att mappa frontend till backend för att listan ska kunna visas.
             this.DataContext = this;
             // Kopplar listan Devices till frontendlistan
-            DeviceList.ItemsSource = Devices;
+            // DeviceList.ItemsSource = Devices;
 
         }
 
