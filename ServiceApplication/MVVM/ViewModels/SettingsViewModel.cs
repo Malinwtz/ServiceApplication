@@ -1,12 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace ServiceApplication.MVVM.ViewModels
 {
-    public class SettingsViewModel
+    public partial class SettingsViewModel : ObservableObject
     {
+        private readonly IServiceProvider _serviceProvider;
+
+        public SettingsViewModel(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+        }
+
+        [ObservableProperty]
+        private string? _title = "Settings";
+
+        [ObservableProperty]
+        private ObservableObject? _currentContentViewModel;
+
+
+        [RelayCommand]
+        private void NavigateToHome()
+        {
+            var mainWindowViewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>(); //behöver serviceprovider för att undvika att nya upp en ny instans
+            mainWindowViewModel.CurrentViewModel = _serviceProvider.GetRequiredService<HomeViewModel>();
+        }
+
+        [RelayCommand]
+        private void ShowAddDevice()
+        {
+
+        }
+        [RelayCommand]
+        private void ShowDeviceList()
+        {
+
+        }
+        [RelayCommand]
+        private void ShowConfiguration()
+        {
+
+        }
+
+        [RelayCommand]
+        private void ExitApplication()
+        {
+            Environment.Exit(0); 
+        }
     }
 }

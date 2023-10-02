@@ -25,13 +25,9 @@ namespace ServiceApplication
                     services.AddTransient<HttpClient>();
                     services.AddSingleton<DateAndTimeService>();
                     services.AddSingleton<WeatherService>();
-                    //services.AddSingleton<MainWindowViewModel>(); //
+                    services.AddSingleton<MainWindowViewModel>(); 
                     //services.AddSingleton<DeviceService>();
-                    //services.AddSingleton<NavigationStore>(); //signleton eftersom instansen bara lever på den här applikationen. Sen vill vi ha kvar samma info över flera vyer så den inte gör en ny insdtans varje gång 
-
-                    services.AddSingleton<ApplicationService>(); //servicen för att stänga ner programmet lägger vi till här                 
                     services.AddSingleton<HomeViewModel>();
-                    ////Lägg till viewmodels så att de kan hämtas
                     services.AddSingleton<SettingsViewModel>(); //vi vill ha samma settingsfönster varje gång vi använder den
                     services.AddSingleton<MainWindow>(); //så att vi kan köra applikationen
                 })
