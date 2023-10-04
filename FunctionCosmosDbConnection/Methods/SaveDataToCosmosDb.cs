@@ -36,7 +36,7 @@ namespace FunctionCosmosDbConnection.Methods
                     var json = Encoding.UTF8.GetString(@event.Body.ToArray());  //gör om en bytearray till en läsbar sträng
                     var data = JsonConvert.DeserializeObject<DataMessage>(json);
 
-                    data.id = Guid.NewGuid().ToString(); // Set a unique ID
+                    //data.id = Guid.NewGuid().ToString(); // Set a unique ID 
                     await _container.CreateItemAsync(data, new PartitionKey(data.id));
 
                     _logger.LogInformation($"Sparade meddelandet: {data}"); //skriver ut json-kod
