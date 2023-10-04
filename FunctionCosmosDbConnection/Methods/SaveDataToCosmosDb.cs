@@ -35,24 +35,21 @@ namespace FunctionCosmosDbConnection.Methods
                 {
                     var json = Encoding.UTF8.GetString(@event.Body.ToArray());  //gör om en bytearray till en läsbar sträng
                     var data = JsonConvert.DeserializeObject<DataMessage>(json);
-                    await _container.CreateItemAsync(data, new PartitionKey(data.Id)); // vill ha in en sträng. 
+
+                    data.id = Guid.NewGuid().ToString(); // Set a unique ID
+                    await _container.CreateItemAsync(data, new PartitionKey(data.id));
 
                     _logger.LogInformation($"Sparade meddelandet: {data}"); //skriver ut json-kod
                 }
-                catch
+                catch ( Exception ex )
                 {
-                    _logger.LogInformation("Kunde inte spara");
+                    _logger.LogInformation($"Kunde inte spara. Felmeddelande: {ex.Message}");
                 }
-            }
-            //foreach (EventData @event in events)
-            //{
-            //    _logger.LogInformation("Event Body: {body}", @event.Body);
-            //    _logger.LogInformation("Event Content-Type: {contentType}", @event.ContentType);
-            //}
+            }        
         }
     }
 }
 
 
-// Connstringarna ska egentligen ligga i localsettingsfilen. Se tidigare projekt.
+// Connstringarna ska ligga i localsettingsfilen. Se tidigare projekt.
 
