@@ -19,9 +19,9 @@ namespace ServiceApplication.Services
             _serviceClient = ServiceClient.CreateFromConnectionString(_connectionString);
         }
 
-        private async Task GetMessagesAsync()
-        {
+        //private async Task GetMessagesAsync()
+        //{
 
-        }
+        //}
     }
 }
