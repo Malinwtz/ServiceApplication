@@ -11,6 +11,7 @@
     </Style>
     <Style x:Key="CurrentDate" TargetType="TextBlock">
         <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Bottom" />
         <Setter Property="FontSize" Value="22" />
         <Setter Property="Foreground" Value="#cccccc" />
     </Style>

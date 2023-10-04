@@ -28,8 +28,8 @@ namespace ServiceApplication.Services
         {
             //behöver inte while-loop för vi har en timer. 
 
-            CurrentDate = DateTime.Now.ToString("HH:mm");
-            CurrentTime = DateTime.Now.ToString("dddd, d MMMM yyyy");
+            CurrentTime = DateTime.Now.ToString("HH:mm");
+            CurrentDate = DateTime.Now.ToString("dddd, d MMMM yyyy");
 
             TimeUpdated?.Invoke();  //lägg till för att uppdatera tiden
         }

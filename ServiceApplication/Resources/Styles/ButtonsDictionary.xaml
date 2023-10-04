@@ -2,12 +2,12 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!-- Här finns alla mina knappstylingar. -->
-    <Style x:Key="SettingsButton" TargetType="Button">
+    <Style x:Key="StandardButton" TargetType="Button">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="#cccccc" />
         <Setter Property="FontSize" Value="40" />
         <Setter Property="FontFamily" Value="{StaticResource FontAwesome-Regular}" />
-        <Setter Property="Content" Value="&#xf1de;" />
+        <!--<Setter Property="Content" Value="&#xf1de;" />-->
         <Setter Property="BorderThickness" Value="0" />
         <!-- För att ändra hovereffekten så att det inte blir en hovereffekt utan en klickeffekt. -->
         <Setter Property="Template">
@@ -38,14 +38,22 @@
 
     </Style>
 
-    <!-- Cancelbutton är baserad på Settingsbutton. Då kan man ändra den property man vill ska 
-   se annorlunda ut, till exempel content. -->
-    <Style x:Key="CancelButton" TargetType="Button" BasedOn="{StaticResource SettingsButton}">
+    <Style x:Key="SettingsButton" TargetType="Button" 
+           BasedOn="{StaticResource StandardButton}">
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="FontFamily" Value="{StaticResource FontAwesome-Regular}" />
+        <Setter Property="FontSize" Value="42" />
+        <Setter Property="Content" Value="&#xf1de;" />
+    </Style>
+
+    <Style x:Key="CancelButton" TargetType="Button" 
+           BasedOn="{StaticResource StandardButton}">
+        <Setter Property="FontSize" Value="42" />
         <Setter Property="Content" Value="&#xf00d;" />
     </Style>
 
-
-    <Style x:Key="MenuButton" TargetType="Button" BasedOn="{StaticResource SettingsButton}">
+    <Style x:Key="MenuButton" TargetType="Button" 
+           BasedOn="{StaticResource StandardButton}">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="#cccccc" />
         <Setter Property="Margin" Value="20 10 20 20"/>
