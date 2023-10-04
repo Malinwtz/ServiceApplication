@@ -16,7 +16,8 @@ namespace ServiceApplication.MVVM.ViewModels
         private readonly DateAndTimeService _dateAndTimeService;
         private readonly WeatherService _weatherService;
 
-        public HomeViewModel(IServiceProvider serviceProvider, DateAndTimeService dateAndTimeService, WeatherService weatherService)
+        public HomeViewModel(IServiceProvider serviceProvider, DateAndTimeService dateAndTimeService, 
+            WeatherService weatherService)
         {
             _serviceProvider = serviceProvider;
             _dateAndTimeService = dateAndTimeService;
@@ -43,16 +44,11 @@ namespace ServiceApplication.MVVM.ViewModels
         private string? _currentWeatherCondition = "\ue137";
 
         [ObservableProperty]
-        private string? _currentOutsideTemperature = "--";
+        private string? _currentTemperature = "--";
 
         [ObservableProperty]
-        private string? _currentOutsideTemperatureUnit = "°C";
+        private string? _currentTemperatureUnit = "°C";
 
-        [ObservableProperty]
-        private string? _currentInsideTemperature = "--";
-
-        [ObservableProperty]
-        private string? _currentInsideTemperatureUnit = "°C";
 
 
         [RelayCommand] // Command i frontend
@@ -74,11 +70,12 @@ namespace ServiceApplication.MVVM.ViewModels
 
         private void UpdateWeather()
         {
-            // Lyssnar på en action-förändring. Varje gång action förändras så triggar denna 
+            // Lyssnar på en action-förändring. Varje gång action förändras så triggar
+            // denna 
             _weatherService.WeatherUpdated += () =>
             {
                 CurrentWeatherCondition = _weatherService.CurrentWeatherCondition;
-            //    CurrentOutsideTemperature = _weatherService.CurrentTemperature;
+                CurrentTemperature = _weatherService.CurrentTemperature;
             };
         }
 

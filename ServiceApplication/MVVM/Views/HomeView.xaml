@@ -7,7 +7,7 @@
              xmlns:viewmodels="clr-namespace:ServiceApplication.MVVM.ViewModels"
              d:DataContext="{d:DesignInstance Type=viewmodels:HomeViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="720" d:DesignWidth="1280">
+             d:DesignHeight="800" d:DesignWidth="1280">
 
     <Grid>
         <Rectangle Fill="#000000" Opacity="0.82"/>
@@ -35,17 +35,12 @@
                      Style="{StaticResource WeatherCondition }" />
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding CurrentOutsideTemperature, FallbackValue=--}" 
-                             Style="{StaticResource WeatherOutsideTemperature}" />
-                        <TextBlock Text="{Binding CurrentOutsideTemperatureUnit, FallbackValue=°C}" 
-                             Style="{StaticResource WeatherOutsideTemperatureUnit}" />
+                        <TextBlock Text="{Binding CurrentTemperature, FallbackValue=--}" 
+                             Style="{StaticResource WeatherTemperature}" />
+                        <TextBlock Text="{Binding CurrentTemperatureUnit, FallbackValue=°C}" 
+                             Style="{StaticResource WeatherTemperatureUnit}" />
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding CurrentInsideTemperature, FallbackValue=--}" 
-                             Style="{StaticResource WeatherInsideTemperature}" />
-                        <TextBlock Text="{Binding CurrentInsideTemperatureUnit, FallbackValue=°C}" 
-                             Style="{StaticResource WeatherInsideTemperatureUnit}" />
-                    </StackPanel>
+              
                 </StackPanel>
 
             </StackPanel>
