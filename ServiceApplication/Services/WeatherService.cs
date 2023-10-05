@@ -71,7 +71,7 @@ namespace ServiceApplication.Services
         }
 
         //private async Task GetInsideTemperature()
-        //{
+        //{ // För att hämta temperatur från vårt eget api. 
         //    try
         //    {
         //        await Task.Delay(2000);
