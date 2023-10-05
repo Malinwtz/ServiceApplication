@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ServiceApplication.MVVM.Views"
              xmlns:viewmodels="clr-namespace:ServiceApplication.MVVM.ViewModels"
+             xmlns:controls="clr-namespace:ServiceApplication.MVVM.Controls"
              d:DataContext="{d:DesignInstance Type=viewmodels:HomeViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1280">
@@ -61,7 +62,27 @@
         </Grid>
 
         <!-- Content section --> 
-        <ItemsControl Grid.Row="1">
+        <ItemsControl Grid.Row="1"
+                      x:Name="DeviceList"
+                      ItemsSource="{Binding Devices}"
+                      Margin="0 20 0 0">
+            
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel HorizontalAlignment="Center" 
+               VerticalAlignment="Center"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+
+                    <!-- Nedan vad som ska skrivas ut på vyn. 
+                    Här använder vi oss av controls.DeviceTileControl. -->
+                    <controls:DeviceTileControl />
+
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
 
         </ItemsControl>
 
@@ -72,4 +93,4 @@
 
 
 
-<!-- ändra till height 800-->
+<!-- i D8: hur man gör user controls för att lägga in de olika sektionerna i separata filer. -->

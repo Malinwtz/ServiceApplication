@@ -19,7 +19,8 @@ namespace FunctionCosmosDbConnection.Methods
         {
             _logger = logger;
 
-            _cosmosClient = new CosmosClient("AccountEndpoint=https://malins-cosmosdb.documents.azure.com:443/;AccountKey=jUj74N15medMT2LhBOkqpMPGsGJcFMp5M97k69zTeylT2GqCyl9NNuSr5XikuIASKqSicp8cfVvAACDbA8JCjg==;");
+            _cosmosClient = new CosmosClient(
+                "AccountEndpoint=https://malins-cosmosdb.documents.azure.com:443/;AccountKey=jUj74N15medMT2LhBOkqpMPGsGJcFMp5M97k69zTeylT2GqCyl9NNuSr5XikuIASKqSicp8cfVvAACDbA8JCjg==;");
             var database = _cosmosClient.GetDatabase("deviceDb");
             _container = database.GetContainer("devicemessages");
         }

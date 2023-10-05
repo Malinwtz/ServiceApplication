@@ -11,7 +11,7 @@ namespace ServiceApplication.Services
     {
         // Hämta ut saker från min iot hub 
 
-        private readonly string _connectionString = "";
+        private readonly string _connectionString = "HostName=MalinsIotDevice.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=YtL+BJzB3/jZ63a378FyZzHZw2B89lDzOAIoTFDCNP8=";
         private readonly ServiceClient _serviceClient;
 
         public DeviceService()

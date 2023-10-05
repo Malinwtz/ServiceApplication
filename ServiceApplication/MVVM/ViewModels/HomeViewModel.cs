@@ -1,9 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Azure.Devices;
 using Microsoft.Extensions.DependencyInjection;
+using ServiceApplication.MVVM.Models;
 using ServiceApplication.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +18,7 @@ namespace ServiceApplication.MVVM.ViewModels
         private readonly IServiceProvider _serviceProvider;
         private readonly DateAndTimeService _dateAndTimeService;
         private readonly WeatherService _weatherService;
+       
 
         public HomeViewModel(IServiceProvider serviceProvider, DateAndTimeService dateAndTimeService, 
             WeatherService weatherService)
@@ -22,13 +26,9 @@ namespace ServiceApplication.MVVM.ViewModels
             _serviceProvider = serviceProvider;
             _dateAndTimeService = dateAndTimeService;
             _weatherService = weatherService;
-
-            UpdateDateAndTime(); // uppdatera tiden när man kör ctor. Om man har while-loop låser man hela programmet.
-            // om man kör denna metod som async Task och användet task för att köra metoden i ctor så kommer det att gå åt mycket cpu
-            // om man använder task.delay(1000) kommer klockan inte att uppdateras som den ska
-            // i dateandtimeservcice: public event Action? TimeUpdated; //använder action för att uppdatera tid och datum
-
-            UpdateWeather(); //hämtar temperaturen
+            
+            UpdateDateAndTime(); 
+            UpdateWeather();
         }
 
         [ObservableProperty]
@@ -52,9 +52,10 @@ namespace ServiceApplication.MVVM.ViewModels
 
 
         [RelayCommand] // Command i frontend
-        private void NavigateToSettings() //lägger till Command på sluet av metodnamnet
+        private void NavigateToSettings() 
         { //hur navigeringen ska gå till. 
-            var mainWindowViewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>(); //behöver serviceprovider för att undvika att nya upp en ny instans
+            var mainWindowViewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>(); 
+            //behöver serviceprovider för att undvika att nya upp en ny instans
             mainWindowViewModel.CurrentViewModel = _serviceProvider.GetRequiredService<SettingsViewModel>();
         }
 

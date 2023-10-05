@@ -28,8 +28,8 @@ namespace ServiceApplication
                     services.AddSingleton<MainWindowViewModel>(); 
                     //services.AddSingleton<DeviceService>();
                     services.AddSingleton<HomeViewModel>();
-                    services.AddSingleton<SettingsViewModel>(); //vi vill ha samma settingsfönster varje gång vi använder den
-                    services.AddSingleton<MainWindow>(); //så att vi kan köra applikationen
+                    services.AddSingleton<SettingsViewModel>(); 
+                    services.AddSingleton<MainWindow>(); 
                 })
                 .Build();
         }
