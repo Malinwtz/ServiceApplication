@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using ServiceApplication.MVVM.ViewModels;
 using ServiceApplication.Services;
+using SharedLibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -22,11 +23,19 @@ namespace ServiceApplication
             AppHost = Host.CreateDefaultBuilder()
                 .ConfigureServices((config, services) =>
                 {
+                    services.AddSingleton(new IotHubManager(new IotHubManagerOptions
+                    {
+                        IotHubConnectionString = "HostName=MalinsIotDevice.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=YtL+BJzB3/jZ63a378FyZzHZw2B89lDzOAIoTFDCNP8=",
+                        EventHubEndPoint = "Endpoint=sb://ihsuprodamres049dednamespace.servicebus.windows.net/;SharedAccessKeyName=iothubowner;SharedAccessKey=YtL+BJzB3/jZ63a378FyZzHZw2B89lDzOAIoTFDCNP8=;EntityPath=iothub-ehub-malinsiotd-25231991-006434fe96",
+                        EventHubName = "iothub-ehub-malinsiotd-25231991-006434fe96",
+                        // 'Consumer Groups' på Azure: gör en ny alt välj en consumergroup och klistra in namnet på den här.
+                        ConsumerGroup = "serviceapplication"
+                    }));
                     services.AddTransient<HttpClient>();
                     services.AddSingleton<DateAndTimeService>();
                     services.AddSingleton<WeatherService>();
                     services.AddSingleton<MainWindowViewModel>(); 
-                    //services.AddSingleton<DeviceService>();
+                    services.AddSingleton<DeviceService>();
                     services.AddSingleton<HomeViewModel>();
                     services.AddSingleton<SettingsViewModel>(); 
                     services.AddSingleton<MainWindow>(); 
@@ -39,10 +48,6 @@ namespace ServiceApplication
             await AppHost!.StartAsync(); //startar servern
 
             var mainWindow = AppHost!.Services.GetRequiredService<MainWindow>();
-
-            //vilken är min currentviewmodel? vi måste välja vilken viewmodel som ska startas upp
-            //var navigationStore = AppHost!.Services.GetRequiredService<NavigationStore>(); //hämta min navigationstore 
-            //navigationStore.CurrentViewModel = new HomeViewModel(navigationStore, ); //lägg till en ny instans av homeviewmodel, det är denna motsvarande vy som ska laddas in. Bygger på att viewen ärver observableobjects
 
             mainWindow.Show();
 

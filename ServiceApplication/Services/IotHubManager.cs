@@ -9,9 +9,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Azure.Messaging.EventHubs.Consumer;
+using SharedLibrary.Models;
 
 namespace ServiceApplication.Services
 {
+
+    // Här hav vi gjort en serviceclient som kan ta emot ett directMethod-meddelande
+    // och skicka iväg det till en specifik adress. Vi behöver även en applikation
+    // där vi kan köra det här ifrån - WPF Applikation (maui fungerar också) WPFService
+    // hanterar all funktionalitet som har med iot huben att göra.
+    // Ex registrera enheter, skicka directmethod-meddelanden
+
     public class IotHubManager
     {
         private RegistryManager _registryManager; //från nuget

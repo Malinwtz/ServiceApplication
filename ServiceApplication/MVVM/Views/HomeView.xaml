@@ -62,9 +62,8 @@
         </Grid>
 
         <!-- Content section --> 
-        <ItemsControl Grid.Row="1"
-                      x:Name="DeviceList"
-                      ItemsSource="{Binding Devices}"
+        <ItemsControl Grid.Row="1"                      
+                      ItemsSource="{Binding DeviceList}"
                       Margin="0 20 0 0">
             
             <ItemsControl.ItemsPanel>

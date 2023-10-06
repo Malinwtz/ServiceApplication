@@ -23,14 +23,11 @@ namespace ServiceApplication.Services
         public WeatherService(HttpClient client)
         {
             _http = client;
-
             Task.Run(SetCurrentWeatherAsync);
-
             _timer = new Timer(60000 * 15);      
             _timer.Elapsed += async (s, e) => await SetCurrentWeatherAsync();
             _timer.Start();
         }
-
 
         //metod som är async för att vi ska hämta från api
         private async Task SetCurrentWeatherAsync()
@@ -38,8 +35,7 @@ namespace ServiceApplication.Services
             try
             {
                 // Hämta info från url och gör om till ett dynamiskt objekt    
-                var data = JsonConvert.DeserializeObject<dynamic>(await _http.GetStringAsync(_url)); 
-                                                                                                                 
+                var data = JsonConvert.DeserializeObject<dynamic>(await _http.GetStringAsync(_url));                                                                                                                  
                 CurrentTemperature = (data!.main.temp - 273.15).ToString("#");
                 CurrentWeatherCondition = GetWeatherConditionIcon(data!.weather[0].description.ToString());
             }
@@ -48,8 +44,7 @@ namespace ServiceApplication.Services
                 CurrentTemperature = "--";
                 CurrentWeatherCondition = GetWeatherConditionIcon("--");
             }
-
-            WeatherUpdated?.Invoke();   //trigga igång/kör/run
+            WeatherUpdated?.Invoke();   
         }
 
         private string GetWeatherConditionIcon(string value)
