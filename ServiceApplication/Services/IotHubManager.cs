@@ -1,5 +1,5 @@
 ﻿using Microsoft.Azure.Devices.Shared;
-using Microsoft.Azure.Devices;
+using Microsoft.Azure.Devices; 
 using Newtonsoft.Json;
 using ServiceApplication.MVVM.Models;
 using System;
@@ -20,10 +20,11 @@ namespace ServiceApplication.Services
     // hanterar all funktionalitet som har med iot huben att göra.
     // Ex registrera enheter, skicka directmethod-meddelanden
 
+    // D13 1:55 anropa sqlite databas för att hitta connectionstring
     public class IotHubManager
     {
-        private RegistryManager _registryManager; //från nuget
-        private ServiceClient _serviceClient; //från nuget
+        private RegistryManager _registryManager; //från nuget Devices
+        private ServiceClient _serviceClient; //från nuget Devices
         private EventHubConsumerClient _consumerClient; //från nuget
 
         public IotHubManager(IotHubManagerOptions options)

@@ -58,8 +58,13 @@ namespace ServiceApplication.MVVM.ViewModels
         [ObservableProperty]
         private string? _currentTemperatureUnit = "°C";
 
+        //[ObservableProperty]
+        //public ObservableCollection<DeviceItem>? _deviceList;
+
         [ObservableProperty]
-        public ObservableCollection<DeviceItem>? _deviceList;
+        public ObservableCollection<DeviceItemViewModel>? _deviceList;
+
+
 
 
 
@@ -90,14 +95,19 @@ namespace ServiceApplication.MVVM.ViewModels
                 CurrentTemperature = _weatherService.CurrentTemperature;
             };
         }
-
         private void UpdateDeviceList()
         {
             // DeviceListUpdated är en action som lyssnar efter en förändring.
+            //_deviceService.DeviceListUpdated += () =>
+            //{
+            //    DeviceList = new ObservableCollection<DeviceItem>(_deviceService.Devices
+            //        .Select(device => new DeviceItem()).ToList());
+            //};
+            //// DeviceListUpdated är en action som lyssnar efter en förändring.
             _deviceService.DeviceListUpdated += () =>
             {
-                DeviceList = new ObservableCollection<DeviceItem>(_deviceService.Devices
-                    .Select(device => new DeviceItem()).ToList()); //gör om till deviceitemviewmodel se D12 MainViewModel
+                DeviceList = new ObservableCollection<DeviceItemViewModel>(_deviceService.Devices
+                    .Select(deviceItem => new DeviceItemViewModel(deviceItem)).ToList());
             };
         }
     
