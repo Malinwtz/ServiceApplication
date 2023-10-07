@@ -5,9 +5,11 @@ VisualStudioVersion = 17.7.34018.315
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceApplication", "ServiceApplication\ServiceApplication.csproj", "{B1BE87D2-581E-42F0-A530-F73E0093D159}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunctionCosmosDbConnection", "FunctionCosmosDbConnection\FunctionCosmosDbConnection.csproj", "{1CE1CEA3-C4FA-4615-9240-825260FAC6B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunctionCosmosDbConnection", "FunctionCosmosDbConnection\FunctionCosmosDbConnection.csproj", "{1CE1CEA3-C4FA-4615-9240-825260FAC6B1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedLibrary", "SharedLibrary\SharedLibrary.csproj", "{D01A2FDA-1570-42D2-8F1E-7A87D785F208}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{78B6C254-E80F-4B68-B197-2C62307CBF8C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{D01A2FDA-1570-42D2-8F1E-7A87D785F208}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D01A2FDA-1570-42D2-8F1E-7A87D785F208}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D01A2FDA-1570-42D2-8F1E-7A87D785F208}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78B6C254-E80F-4B68-B197-2C62307CBF8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78B6C254-E80F-4B68-B197-2C62307CBF8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78B6C254-E80F-4B68-B197-2C62307CBF8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78B6C254-E80F-4B68-B197-2C62307CBF8C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

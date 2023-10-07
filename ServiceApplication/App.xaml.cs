@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using DataAccess.Contexts;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ServiceApplication.MVVM.ViewModels;
 using ServiceApplication.Services;
@@ -31,6 +33,9 @@ namespace ServiceApplication
                         // 'Consumer Groups' på Azure: gör en ny alt välj en consumergroup och klistra in namnet på den här.
                         ConsumerGroup = "serviceapplication"
                     }));
+                    services.AddDbContext<ApplicationDbContext>(
+                        x => x.UseSqlite($"Data Source=Database.sqlite.db", 
+                        x=> x.MigrationsAssembly(nameof(DataAccess))));
                     services.AddTransient<HttpClient>();
                     services.AddSingleton<DateAndTimeService>();
                     services.AddSingleton<WeatherService>();
