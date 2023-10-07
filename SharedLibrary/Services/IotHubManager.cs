@@ -8,29 +8,35 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Timers;
+using Timer = System.Timers.Timer;
 
 namespace SharedLibrary.Services
-{
-    // Här hav vi gjort en serviceclient som kan ta emot ett directMethod-meddelande
-    // och skicka iväg det till en specifik adress. Vi behöver även en applikation
-    // där vi kan köra det här ifrån - WPF Applikation (maui fungerar också) WPFService
-    // hanterar all funktionalitet som har med iot huben att göra.
-    // Ex registrera enheter, skicka directmethod-meddelanden
-
-    // >>>>>>    D13 1:55 anropa sqlite databas för att hitta connectionstring
-    //              3:25 azure function för att automatiskt koppla devices till huben via databasens connectionstring <<<<<<<
+{    
     public class IotHubManager
     {
-        private RegistryManager _registryManager; //från nuget Devices
-        private ServiceClient _serviceClient; //från nuget Devices
+        private readonly RegistryManager _registryManager; //från nuget Devices
+        private readonly ServiceClient _serviceClient; //från nuget Devices
         private EventHubConsumerClient _consumerClient; //från nuget
+        private readonly Timer _timer;  //using System.Timers;
+
+        public List<DeviceItem> Devices { get; private set; }
+
+        public event Action DeviceListUpdated;
 
         public IotHubManager(IotHubManagerOptions options)
         {
             _registryManager = RegistryManager.CreateFromConnectionString(options.IotHubConnectionString);
             _serviceClient = ServiceClient.CreateFromConnectionString(options.IotHubConnectionString);
             _consumerClient = new EventHubConsumerClient(options.ConsumerGroup, options.EventHubEndPoint);
+
+
+
+            Devices = new List<DeviceItem>();
+            Task.Run(GetAllDevicesAsync);
+            _timer = new Timer(5000);
+            _timer.Elapsed += async (s, e) => await GetAllDevicesAsync();
+            _timer.Start();
         }
 
 
@@ -95,6 +101,49 @@ namespace SharedLibrary.Services
             }
             catch (Exception ex) { Debug.WriteLine($"{ex.Message}"); }
             return null!;
+        }
+
+        private async Task GetAllDevicesAsync()
+        {
+            try
+            {
+                var updated = false;
+                var list = new List<Twin>();
+                var result = _registryManager.CreateQuery("select * from devices");
+
+                foreach (var item in await result.GetNextAsTwinAsync())
+                    list.Add(item);
+
+                foreach (var device in list)
+                    if (!Devices.Any(x => x.DeviceId == device.DeviceId))
+                    {
+                        var _device = new DeviceItem { DeviceId = device.DeviceId };
+
+                        try { _device.DeviceType = device.Properties.Reported["deviceType"].ToString(); }
+                        catch { }
+
+                        try { _device.IsActive = bool.Parse(!string.IsNullOrEmpty(device.Properties.Reported["isActive"].ToString())); }
+                        catch { }
+
+                        Devices.Add(_device);
+                        updated = true;
+                    }
+                for (int i = Devices.Count - 1; i >= 0; i--)
+                {
+                    if (!list.Any(x => x.DeviceId == Devices[i].DeviceId))
+                    {
+                        Devices.RemoveAt(i);
+                        updated = true;
+                    }
+                }
+                if (updated)
+                    DeviceListUpdated.Invoke();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+            }
         }
 
     }

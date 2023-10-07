@@ -93,9 +93,9 @@ namespace ServiceApplication.MVVM.ViewModels
         }
         private void UpdateDeviceList()
         {  
-            _deviceService.DeviceListUpdated += () =>
+            _iotHubManager.DeviceListUpdated += () =>
             {
-                DeviceList = new ObservableCollection<DeviceItemViewModel>(_deviceService.Devices
+                DeviceList = new ObservableCollection<DeviceItemViewModel>(_iotHubManager.Devices
                     .Select(deviceItem => new DeviceItemViewModel(deviceItem)).ToList());
             };
         }
