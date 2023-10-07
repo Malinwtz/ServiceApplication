@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 using ServiceApplication.MVVM.ViewModels;
 using ServiceApplication.Services;
 using SharedLibrary.Models;
+using SharedLibrary.Services;
 using System;
 using System.Collections.Generic;
 using System.Configuration;

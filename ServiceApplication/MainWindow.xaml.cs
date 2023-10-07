@@ -1,4 +1,4 @@
-﻿using ServiceApplication.MVVM.Models;
+﻿
 using ServiceApplication.MVVM.ViewModels;
 using ServiceApplication.Services;
 using System.Collections.ObjectModel;

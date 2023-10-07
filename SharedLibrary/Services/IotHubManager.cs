@@ -1,26 +1,25 @@
-﻿using Microsoft.Azure.Devices.Shared;
-using Microsoft.Azure.Devices; 
+﻿using Azure.Messaging.EventHubs.Consumer;
+using Microsoft.Azure.Devices;
+using Microsoft.Azure.Devices.Shared;
 using Newtonsoft.Json;
-using ServiceApplication.MVVM.Models;
+using SharedLibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Azure.Messaging.EventHubs.Consumer;
-using SharedLibrary.Models;
 
-namespace ServiceApplication.Services
+namespace SharedLibrary.Services
 {
-
     // Här hav vi gjort en serviceclient som kan ta emot ett directMethod-meddelande
     // och skicka iväg det till en specifik adress. Vi behöver även en applikation
     // där vi kan köra det här ifrån - WPF Applikation (maui fungerar också) WPFService
     // hanterar all funktionalitet som har med iot huben att göra.
     // Ex registrera enheter, skicka directmethod-meddelanden
 
-    // D13 1:55 anropa sqlite databas för att hitta connectionstring
+    // >>>>>>    D13 1:55 anropa sqlite databas för att hitta connectionstring
+    //              3:25 azure function för att automatiskt koppla devices till huben via databasens connectionstring <<<<<<<
     public class IotHubManager
     {
         private RegistryManager _registryManager; //från nuget Devices
@@ -78,8 +77,6 @@ namespace ServiceApplication.Services
             catch (Exception ex) { Debug.WriteLine($"{ex.Message}"); }
             return null!;
         }
-
-
 
         // Metod för att hämta upp alla devices som en lista av Twins
         public async Task<IEnumerable<Twin>> GetDevicesAsTwinAsync(string sqlQuery = "select * from devices")

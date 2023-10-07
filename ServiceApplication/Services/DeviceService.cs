@@ -1,7 +1,8 @@
 ﻿using Microsoft.Azure.Devices;
 using Microsoft.Azure.Devices.Shared;
 using Newtonsoft.Json;
-using ServiceApplication.MVVM.Models;
+using SharedLibrary.Models;
+using SharedLibrary.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -28,7 +29,8 @@ namespace ServiceApplication.Services
         private readonly Timer _timer;  //using System.Timers;
         private readonly IotHubManager _iotHubManager;
         public List<DeviceItem> Devices { get; private set; } 
-        public event Action? DeviceListUpdated;
+
+        public event Action DeviceListUpdated;
 
 
         public DeviceService(IotHubManager iotHubManager)
@@ -86,7 +88,6 @@ namespace ServiceApplication.Services
                         Devices.Add(_device);
                         updated = true;
                     }
-
                 for (int i = Devices.Count - 1; i >= 0; i--)
                 {
                     if (!list.Any(x => x.DeviceId == Devices[i].DeviceId))
@@ -95,11 +96,8 @@ namespace ServiceApplication.Services
                         updated = true;
                     }
                 }
-
-
                 if (updated)
                     DeviceListUpdated.Invoke();
-
             }
             catch (Exception ex)
             {

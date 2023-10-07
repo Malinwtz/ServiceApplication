@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Azure.Devices;
 using Microsoft.Azure.Devices.Shared;
 using Microsoft.Extensions.DependencyInjection;
-using ServiceApplication.MVVM.Models;
 using ServiceApplication.Services;
 using SharedLibrary.Models;
 using System;
@@ -15,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
+using SharedLibrary.Services;
 
 namespace ServiceApplication.MVVM.ViewModels
 {
@@ -65,11 +65,7 @@ namespace ServiceApplication.MVVM.ViewModels
         public ObservableCollection<DeviceItemViewModel>? _deviceList;
 
 
-
-
-
-
-        [RelayCommand] // Command i frontend
+        [RelayCommand] 
         private void NavigateToSettings() 
         { //hur navigeringen ska gå till. 
             var mainWindowViewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>(); 
@@ -96,14 +92,7 @@ namespace ServiceApplication.MVVM.ViewModels
             };
         }
         private void UpdateDeviceList()
-        {
-            // DeviceListUpdated är en action som lyssnar efter en förändring.
-            //_deviceService.DeviceListUpdated += () =>
-            //{
-            //    DeviceList = new ObservableCollection<DeviceItem>(_deviceService.Devices
-            //        .Select(device => new DeviceItem()).ToList());
-            //};
-            //// DeviceListUpdated är en action som lyssnar efter en förändring.
+        {  
             _deviceService.DeviceListUpdated += () =>
             {
                 DeviceList = new ObservableCollection<DeviceItemViewModel>(_deviceService.Devices

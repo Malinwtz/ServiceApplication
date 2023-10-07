@@ -1,9 +1,9 @@
 ﻿using Microsoft.Azure.Devices;
 using Microsoft.Azure.Devices.Shared;
-using ServiceApplication.MVVM.Models;
 using ServiceApplication.MVVM.ViewModels;
 using ServiceApplication.Services;
 using SharedLibrary.Models;
+using SharedLibrary.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
