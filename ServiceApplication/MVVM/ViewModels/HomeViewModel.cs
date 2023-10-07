@@ -97,7 +97,7 @@ namespace ServiceApplication.MVVM.ViewModels
             _deviceService.DeviceListUpdated += () =>
             {
                 DeviceList = new ObservableCollection<DeviceItem>(_deviceService.Devices
-                    .Select(device => new DeviceItem()).ToList());
+                    .Select(device => new DeviceItem()).ToList()); //gör om till deviceitemviewmodel se D12 MainViewModel
             };
         }
     
