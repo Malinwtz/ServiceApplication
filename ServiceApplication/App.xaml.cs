@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -49,15 +50,10 @@ namespace ServiceApplication
         protected override async void OnStartup(StartupEventArgs args)
         {
             await AppHost!.StartAsync(); 
-
             var mainWindow = AppHost!.Services.GetRequiredService<MainWindow>();
-
             mainWindow.Show();
-
             base.OnStartup(args);
         }
-
-
     }
 }
 
