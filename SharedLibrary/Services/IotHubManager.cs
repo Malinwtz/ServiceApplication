@@ -15,9 +15,9 @@ namespace SharedLibrary.Services
 {    
     public class IotHubManager
     {
-        private readonly RegistryManager _registryManager; //från nuget Devices
-        private readonly ServiceClient _serviceClient; //från nuget Devices
-        private EventHubConsumerClient _consumerClient; //från nuget
+        private readonly RegistryManager _registryManager; 
+        private readonly ServiceClient _serviceClient; 
+        private EventHubConsumerClient _consumerClient; 
         private readonly Timer _timer;  //using System.Timers;
 
         public List<DeviceItem> Devices { get; private set; }

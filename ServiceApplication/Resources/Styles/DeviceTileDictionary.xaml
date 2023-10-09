@@ -55,10 +55,10 @@
                                             <TextBlock Text="{Binding DataContext.IsActive, FallbackValue=Inactive}" 
                                                     HorizontalAlignment="Center"
                                                     Foreground="#cccccc"/>
-                                            <Button Content="Start/Stop"
+                                            <!--<Button Content="Start/Stop"
                                                     Command="{Binding DataContext.StartStopButtonCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                                                     CommandParameter="{Binding DeviceId}"
-                                                    />
+                                                    />-->
                                         </StackPanel>
                                     </Grid>
 

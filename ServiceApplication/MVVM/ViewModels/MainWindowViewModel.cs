@@ -9,8 +9,6 @@ namespace ServiceApplication.MVVM.ViewModels
         public MainWindowViewModel(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-
-            //vill set:a vilken vy som ska öppnas upp
             CurrentViewModel = _serviceProvider.GetRequiredService<HomeViewModel>(); 
             // Såhär slipper vi lägga in homeviewmodel som en ny instans.
         }

@@ -1,5 +1,6 @@
 ﻿using DataAccess.Contexts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ServiceApplication.MVVM.ViewModels;
@@ -24,16 +25,13 @@ namespace ServiceApplication
         public App()
         {
             AppHost = Host.CreateDefaultBuilder()
+                //.ConfigureAppConfiguration((context, config) =>
+                //{
+                //    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                //})
                 .ConfigureServices((config, services) =>
                 {
-                    services.AddSingleton(new IotHubManager(new IotHubManagerOptions
-                    {
-                        IotHubConnectionString = "HostName=MalinsIotDevice.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=YtL+BJzB3/jZ63a378FyZzHZw2B89lDzOAIoTFDCNP8=",
-                        EventHubEndPoint = "Endpoint=sb://ihsuprodamres049dednamespace.servicebus.windows.net/;SharedAccessKeyName=iothubowner;SharedAccessKey=YtL+BJzB3/jZ63a378FyZzHZw2B89lDzOAIoTFDCNP8=;EntityPath=iothub-ehub-malinsiotd-25231991-006434fe96",
-                        EventHubName = "iothub-ehub-malinsiotd-25231991-006434fe96",
-                        // 'Consumer Groups' på Azure: gör en ny alt välj en consumergroup och klistra in namnet på den här.
-                        ConsumerGroup = "serviceapplication"
-                    }));
+                    services.AddSingleton(new IotHubManager(new IotHubManagerOptions()));   
                     services.AddDbContext<ApplicationDbContext>(
                         x => x.UseSqlite($"Data Source=Database.sqlite.db", 
                         x=> x.MigrationsAssembly(nameof(DataAccess))));
@@ -49,9 +47,9 @@ namespace ServiceApplication
                 .Build();
         }
 
-        protected override async void OnStartup(StartupEventArgs args) //starta upp våra services
+        protected override async void OnStartup(StartupEventArgs args)
         {
-            await AppHost!.StartAsync(); //startar servern
+            await AppHost!.StartAsync(); 
 
             var mainWindow = AppHost!.Services.GetRequiredService<MainWindow>();
 
@@ -63,3 +61,12 @@ namespace ServiceApplication
 
     }
 }
+
+
+//services.AddSingleton(new IotHubManager(new IotHubManagerOptions(
+//    {
+//    IotHubConnectionString = "HostName=MalinsIotDevice.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=YtL+BJzB3/jZ63a378FyZzHZw2B89lDzOAIoTFDCNP8=",
+//    EventHubEndPoint = "Endpoint=sb://ihsuprodamres049dednamespace.servicebus.windows.net/;SharedAccessKeyName=iothubowner;SharedAccessKey=YtL+BJzB3/jZ63a378FyZzHZw2B89lDzOAIoTFDCNP8=;EntityPath=iothub-ehub-malinsiotd-25231991-006434fe96",
+//    EventHubName = "iothub-ehub-malinsiotd-25231991-006434fe96",
+//    ConsumerGroup = "serviceapplication"
+//}));
