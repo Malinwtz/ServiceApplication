@@ -27,7 +27,7 @@ namespace ServiceApplication
             AppHost = Host.CreateDefaultBuilder()
                 //.ConfigureAppConfiguration((context, config) =>
                 //{
-                //    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                //    config.AddJsonFile("../appsettings.json", optional: true, reloadOnChange: true);
                 //})
                 .ConfigureServices((config, services) =>
                 {
@@ -39,7 +39,6 @@ namespace ServiceApplication
                     services.AddSingleton<DateAndTimeService>();
                     services.AddSingleton<WeatherService>();
                     services.AddSingleton<MainWindowViewModel>(); 
-                    services.AddSingleton<DeviceService>();
                     services.AddSingleton<HomeViewModel>();
                     services.AddSingleton<SettingsViewModel>(); 
                     services.AddSingleton<MainWindow>(); 

@@ -24,16 +24,14 @@ namespace ServiceApplication.MVVM.ViewModels
         private readonly DateAndTimeService _dateAndTimeService;
         private readonly WeatherService _weatherService;
         private readonly IotHubManager _iotHubManager;
-        private readonly DeviceService _deviceService;
 
         public HomeViewModel(IServiceProvider serviceProvider, DateAndTimeService dateAndTimeService,
-            WeatherService weatherService, IotHubManager iotHubManager, DeviceService deviceService)
+            WeatherService weatherService, IotHubManager iotHubManager)
         {
             _serviceProvider = serviceProvider;
             _dateAndTimeService = dateAndTimeService;
             _weatherService = weatherService;
             _iotHubManager = iotHubManager;
-            _deviceService = deviceService;
 
             UpdateDeviceList();
             UpdateDateAndTime();

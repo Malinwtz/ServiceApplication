@@ -8,10 +8,20 @@ namespace SharedLibrary.Models
 {
     public class IotHubManagerOptions
     {
-        public string IotHubConnectionString { get; set; } = "HostName=MalinsIotDevice.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=YtL+BJzB3/jZ63a378FyZzHZw2B89lDzOAIoTFDCNP8=";   //null!;
-        public string EventHubEndPoint { get; set; } = "Endpoint=sb://ihsuprodamres049dednamespace.servicebus.windows.net/;SharedAccessKeyName=iothubowner;SharedAccessKey=YtL+BJzB3/jZ63a378FyZzHZw2B89lDzOAIoTFDCNP8=;EntityPath=iothub-ehub-malinsiotd-25231991-006434fe96"; //null!;
-        public string EventHubName { get; set; } = "iothub-ehub-malinsiotd-25231991-006434fe96"; // null!;
-        public string ConsumerGroup { get; set; } = "serviceapplication"; // null!;
+        public string IotHubConnectionString { get; set; } = "HostName=MalinsIotDevice.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=YtL+BJzB3/jZ63a378FyZzHZw2B89lDzOAIoTFDCNP8="; 
+        public string EventHubEndPoint { get; set; } = "Endpoint=sb://ihsuprodamres049dednamespace.servicebus.windows.net/;SharedAccessKeyName=iothubowner;SharedAccessKey=YtL+BJzB3/jZ63a378FyZzHZw2B89lDzOAIoTFDCNP8=;EntityPath=iothub-ehub-malinsiotd-25231991-006434fe96"; 
+        public string EventHubName { get; set; } = "iothub-ehub-malinsiotd-25231991-006434fe96"; 
+        public string ConsumerGroup { get; set; } = "serviceapplication"; 
     }
+
+
+
+    //public class IotHubManagerOptions
+    //{
+    //    public string IotHubConnectionString { get; set; } = null!;
+    //    public string EventHubEndPoint { get; set; } = null!;
+    //    public string EventHubName { get; set; } =  null!;
+    //    public string ConsumerGroup { get; set; } =  null!;
+    //}
 }
 
