@@ -24,12 +24,11 @@ namespace SharedLibrary.Models
 
         private string SetIcon()
         {
-            // Förenklad version av metoden nedan
             return (DeviceType?.ToLower()) switch
             {
                 "light" => "\uf0eb",
                 "fan" => "\ue004",
-                _ => "\uf2db",//unicode i C#
+                _ => "\uf2db",
             };
         }
     }

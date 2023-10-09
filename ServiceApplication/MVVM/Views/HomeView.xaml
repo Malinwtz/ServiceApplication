@@ -79,7 +79,7 @@
                     <!-- Nedan vad som ska skrivas ut på vyn. 
                     Här använder vi oss av controls.DeviceTileControl. -->
                     <controls:DeviceTileControl />
-
+                    <!--<Button  Style="{StaticResource DeviceTile}" />-->
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
 

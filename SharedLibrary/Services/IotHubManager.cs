@@ -22,16 +22,14 @@ namespace SharedLibrary.Services
 
         public List<DeviceItem> Devices { get; private set; }
 
-        public event Action DeviceListUpdated;
+        public event Action? DeviceListUpdated;
 
         public IotHubManager(IotHubManagerOptions options)
         {
             _registryManager = RegistryManager.CreateFromConnectionString(options.IotHubConnectionString);
             _serviceClient = ServiceClient.CreateFromConnectionString(options.IotHubConnectionString);
             _consumerClient = new EventHubConsumerClient(options.ConsumerGroup, options.EventHubEndPoint);
-
-
-
+            
             Devices = new List<DeviceItem>();
             Task.Run(GetAllDevicesAsync);
             _timer = new Timer(5000);
@@ -103,7 +101,7 @@ namespace SharedLibrary.Services
             return null!;
         }
 
-        private async Task GetAllDevicesAsync()
+        public async Task GetAllDevicesAsync()
         {
             try
             {
@@ -119,13 +117,19 @@ namespace SharedLibrary.Services
                     {
                         var _device = new DeviceItem { DeviceId = device.DeviceId };
 
-                        try { _device.DeviceType = device.Properties.Reported["deviceType"].ToString(); }
-                        catch { }
+                        //try { _device.DeviceType = device.Properties.Reported["deviceType"].ToString(); }
+                        //catch (Exception ex)
+                        //{
+                        //    Debug.WriteLine($"Fel: {ex.Message}");
+                        //}
 
                         try { _device.IsActive = bool.Parse(!string.IsNullOrEmpty(device.Properties.Reported["isActive"].ToString())); }
-                        catch { }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine($"Fel: {ex.Message}");
+                        }
 
-                        Devices.Add(_device);
+                        Devices.Add(_device); // det kommer in devices med properties som det ska
                         updated = true;
                     }
                 for (int i = Devices.Count - 1; i >= 0; i--)
@@ -137,7 +141,7 @@ namespace SharedLibrary.Services
                     }
                 }
                 if (updated)
-                    DeviceListUpdated.Invoke();
+                    DeviceListUpdated!.Invoke();
             }
             catch (Exception ex)
             {
@@ -145,6 +149,5 @@ namespace SharedLibrary.Services
                 Debug.WriteLine(ex.StackTrace);
             }
         }
-
     }
 }
