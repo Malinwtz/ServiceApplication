@@ -85,4 +85,8 @@
     </Page>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="MVVM\Models\" />
+  </ItemGroup>
+
 </Project>

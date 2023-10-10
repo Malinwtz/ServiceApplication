@@ -10,11 +10,11 @@ namespace ServiceApplication.MVVM.ViewModels
 {
     public class DeviceItemViewModel
     {
-        private DeviceItem _deviceItem;
+        public DeviceItem DeviceItem { get; private set; } = new DeviceItem();
 
         public DeviceItemViewModel(DeviceItem deviceItem)
         {
-            _deviceItem = deviceItem;
+            DeviceItem = deviceItem;
         }
     }
 }

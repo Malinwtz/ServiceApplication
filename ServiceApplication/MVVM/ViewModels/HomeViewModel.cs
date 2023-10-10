@@ -62,26 +62,22 @@ namespace ServiceApplication.MVVM.ViewModels
         [ObservableProperty]
         public ObservableCollection<DeviceItemViewModel>? _deviceList;
 
-
         // Relay command som ska starta/stoppa enheten med en direct method. 
         [RelayCommand]
-        public async Task StartStopButton(string deviceId)
+        public async Task StartStopButton(DeviceItemViewModel device)
         {
-
-            var deviceItem = _iotHubManager.Devices.FirstOrDefault(x => x.DeviceId == deviceId);
-            
-            if (deviceItem != null)
+            if (device != null)
             {
-                var isDeviceActive = deviceItem.IsActive;
+                var isDeviceActive = device.DeviceItem.IsActive;
                 try
                 {
-                    if (!string.IsNullOrEmpty(deviceId))
+                    if (!string.IsNullOrEmpty(device.DeviceItem.DeviceId))
                     {
                         if (isDeviceActive == false)
                         {
                             await _iotHubManager.SendMethodAsync(new MethodDataRequest
                             {
-                                DeviceId = deviceId,
+                                DeviceId = device.DeviceItem.DeviceId,
                                 MethodName = "start"
                             });
                             isDeviceActive = true;
@@ -90,7 +86,7 @@ namespace ServiceApplication.MVVM.ViewModels
                         {
                             await _iotHubManager.SendMethodAsync(new MethodDataRequest
                             {
-                                DeviceId = deviceId,
+                                DeviceId = device.DeviceItem.DeviceId,
                                 MethodName = "stop"
                             });
                             isDeviceActive = false;

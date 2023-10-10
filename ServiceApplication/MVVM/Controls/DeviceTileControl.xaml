@@ -9,6 +9,11 @@
              mc:Ignorable="d" 
              >
 
-    <Button Style="{StaticResource DeviceTile}" />
+    <Button Style="{StaticResource DeviceTile}"
+        Command="{Binding DataContext.StartStopButtonCommand, 
+        RelativeSource={RelativeSource 
+        AncestorType={x:Type UserControl}}}"
+        CommandParameter="{Binding DeviceId}"
+        />
 
 </UserControl>

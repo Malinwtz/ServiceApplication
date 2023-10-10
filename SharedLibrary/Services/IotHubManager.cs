@@ -32,7 +32,7 @@ namespace SharedLibrary.Services
             Task.Run(GetAllDevicesAsync);
             _timer = new Timer(5000);
             _timer.Elapsed += async (s, e) => await GetAllDevicesAsync();
-            _timer.Start();
+            _timer.Start(); 
         }
 
         //metod för att skicka vilken metod som registrerats
@@ -51,8 +51,7 @@ namespace SharedLibrary.Services
             }
             catch (Exception ex){ Debug.WriteLine(ex.Message); }
             return null!;
-        }
-                      
+        }                      
         public async Task<IEnumerable<string>> GetDevicesAsJsonAsync()
         {
             try
@@ -70,7 +69,31 @@ namespace SharedLibrary.Services
             catch (Exception ex) { Debug.WriteLine($"{ex.Message}"); }
             return null!;
         }  // Metod för att hämta upp alla devices som en lista av jsonobjekt/strängar
-                
+        public async Task<IEnumerable<DeviceItem>> GetDeviceAsJsonAsync()
+        {
+            try
+            {
+                var devices = new List<DeviceItem>();
+                var result = _registryManager.CreateQuery("select * from devices");
+                if (result.HasMoreResults)
+                {
+                    var jsonSerializer = new JsonSerializer();
+                    foreach (var deviceJson in await result.GetNextAsJsonAsync())
+                    {
+                        using (var stringReader = new StringReader(deviceJson))
+                        using (var jsonReader = new JsonTextReader(stringReader))
+                        {
+                            var deviceInfo = jsonSerializer.Deserialize<DeviceItem>(jsonReader);
+                            if (deviceInfo != null)
+                                devices.Add(deviceInfo);
+                        }
+                    }
+                }                                                    
+                return devices;
+            }
+            catch (Exception ex) { Debug.WriteLine($"{ex.Message}"); }
+            return null!;
+        }
         public async Task<IEnumerable<Twin>> GetDevicesAsTwinAsync(string sqlQuery = "select * from devices") // Metod för att hämta upp alla devices som en lista av Twins
         {
             try
@@ -81,6 +104,24 @@ namespace SharedLibrary.Services
                     foreach (var device in await result.GetNextAsTwinAsync()) // hämta ut det som ett twinobjekt
                         devices.Add(device);                       // spara i en lista av twins 
                 return devices;
+            }
+            catch (Exception ex) { Debug.WriteLine($"{ex.Message}"); }
+            return null!;
+        }
+        public async Task<Twin> GetDeviceAsTwinAsync(string deviceId) 
+        {
+            try
+            {
+                var singleDevice = new Twin();
+                var devices = new List<Twin>(); 
+                var result = _registryManager.CreateQuery("select * from devices");  
+                if (result.HasMoreResults)
+                    foreach (var device in await result.GetNextAsTwinAsync())
+                    {
+                        if(device.DeviceId == deviceId)
+                            singleDevice = device;
+                    }                                          
+                return singleDevice;
             }
             catch (Exception ex) { Debug.WriteLine($"{ex.Message}"); }
             return null!;
@@ -104,13 +145,25 @@ namespace SharedLibrary.Services
 
                         //try { _device.DeviceType = device.Properties.Reported["deviceType"].ToString(); }
                         //catch (Exception ex){ Debug.WriteLine($"Fel: {ex.Message}");}
-
-                        try { _device.IsActive = bool.Parse(!string.IsNullOrEmpty(device.Properties.Reported["isActive"].ToString())); }
+                        try { 
+                            bool isActive = device.Properties.Reported["isActive"];
+                            _device.IsActive = isActive;
+                        }
+                        //try { _device.IsActive = bool.Parse(!string.IsNullOrEmpty(device.Properties.Reported["isActive"].ToString())); }
                         catch (Exception ex) { Debug.WriteLine($"Fel: {ex.Message}"); }
 
                         Devices.Add(_device); // det kommer in devices med properties som det ska
                         updated = true;
                     }
+
+                for (int i = Devices.Count - 1; i >= 0; i--)
+                {
+                    if (list.Any(x => x.Properties.Reported["isActive"] != Devices[i].IsActive))
+                    {
+                        Devices[i].IsActive = !Devices[i].IsActive;
+                        updated = true;
+                    }
+                }
 
                 for (int i = Devices.Count - 1; i >= 0; i--)
                 {

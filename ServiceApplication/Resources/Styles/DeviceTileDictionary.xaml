@@ -39,7 +39,7 @@
                             <ContentPresenter.ContentTemplate>
                                 <!-- Berättar HUR data av typen DeviceItem ska visas. Binder till datatypen DeviceItem.bMåste lägga till namespace för att den ska 
                                 hitta DeviceItem.-->
-                                <DataTemplate DataType="{x:Type models:DeviceItem}">
+                                <DataTemplate DataType="{x:Type viewmodels:DeviceItemViewModel}">
 
                                     <!-- Detta behöver vi ändra på om vi ska använda mallen till andra knappar. -->
                                     <Grid>
@@ -49,16 +49,12 @@
                                                     FontSize="80"
                                                     Foreground="#ffffff"
                                                     Margin="0 0 0 20"/>
-                                            <TextBlock Text="{Binding DeviceId, FallbackValue=Unknown}" 
+                                            <TextBlock Text="{Binding DeviceItem.DeviceId, FallbackValue=Unknown}" 
                                                     HorizontalAlignment="Center"
                                                     Foreground="#cccccc"/>
-                                            <TextBlock Text="{Binding DataContext.IsActive, FallbackValue=Inactive}" 
+                                            <TextBlock Text="{Binding DeviceItem.IsActive, FallbackValue=Inactive}" 
                                                     HorizontalAlignment="Center"
                                                     Foreground="#cccccc"/>
-                                            <!--<Button Content="Start/Stop"
-                                                    Command="{Binding DataContext.StartStopButtonCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                                                    CommandParameter="{Binding DeviceId}"
-                                                    />-->
                                         </StackPanel>
                                     </Grid>
 

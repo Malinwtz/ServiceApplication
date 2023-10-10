@@ -75,11 +75,11 @@
 
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-
-                    <!-- Nedan vad som ska skrivas ut på vyn. 
-                    Här använder vi oss av controls.DeviceTileControl. -->
-                    <controls:DeviceTileControl />
-                    <!--<Button  Style="{StaticResource DeviceTile}" />-->
+                    <!--<controls:DeviceTileControl />-->
+                    <Button Style="{StaticResource DeviceTile}"
+                            Command="{Binding DataContext.StartStopButtonCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                            CommandParameter="{Binding}"
+                            />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
 
