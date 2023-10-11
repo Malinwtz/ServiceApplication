@@ -1,6 +1,8 @@
 ﻿using Azure.Messaging.EventHubs.Consumer;
+using DataAccess.Contexts;
 using Microsoft.Azure.Devices;
 using Microsoft.Azure.Devices.Shared;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SharedLibrary.Models;
 using System;
@@ -15,24 +17,52 @@ namespace SharedLibrary.Services
 {    
     public class IotHubManager
     {
-        private readonly RegistryManager _registryManager; 
-        private readonly ServiceClient _serviceClient; 
+        private string _connectionString = string.Empty;
+        private bool isConfigured;
+        private RegistryManager _registryManager; 
+        private ServiceClient _serviceClient; 
         private EventHubConsumerClient _consumerClient; 
         private readonly Timer _timer;  //using System.Timers;
         public List<DeviceItem> Devices { get; private set; }
         public event Action? DeviceListUpdated;
 
-        public IotHubManager(IotHubManagerOptions options)
+        private readonly ApplicationDbContext _context;
+
+        public IotHubManager(IotHubManagerOptions options, ApplicationDbContext context)
         {
-            _registryManager = RegistryManager.CreateFromConnectionString(options.IotHubConnectionString);
-            _serviceClient = ServiceClient.CreateFromConnectionString(options.IotHubConnectionString);
-            _consumerClient = new EventHubConsumerClient(options.ConsumerGroup, options.EventHubEndPoint);
-            
+            _context = context;
+
+           // Task.FromResult(InitializeAsync());
+
+            _connectionString = options.IotHubConnectionString;
+            // Initialize();
+            _registryManager = RegistryManager.CreateFromConnectionString(_connectionString);
+            _serviceClient = ServiceClient.CreateFromConnectionString(_connectionString);
+            //_consumerClient = new EventHubConsumerClient(options.ConsumerGroup, options.EventHubEndPoint);
+
             Devices = new List<DeviceItem>();
             Task.Run(GetAllDevicesAsync);
-            _timer = new Timer(5000);
+            _timer = new Timer(2000);
             _timer.Elapsed += async (s, e) => await GetAllDevicesAsync();
-            _timer.Start(); 
+            _timer.Start();
+        }
+
+        public async Task InitializeAsync()
+        {
+            try
+            {
+                var settings = await _context.Settings.FirstOrDefaultAsync(); //settings är null 
+                if (settings != null)
+                {
+                    if (!string.IsNullOrEmpty(_connectionString))
+                    {
+                        _registryManager = RegistryManager.CreateFromConnectionString(settings.ConnectionString);
+                        _serviceClient = ServiceClient.CreateFromConnectionString(settings.ConnectionString);
+                        isConfigured = true;
+                    }
+                }
+            }
+            catch (Exception ex) { Debug.Write(ex.Message); }
         }
 
         //metod för att skicka vilken metod som registrerats
@@ -52,48 +82,48 @@ namespace SharedLibrary.Services
             catch (Exception ex){ Debug.WriteLine(ex.Message); }
             return null!;
         }                      
-        public async Task<IEnumerable<string>> GetDevicesAsJsonAsync()
-        {
-            try
-            {
-                var devices = new List<string>();
-                //här vill vi hämta devices med en query. Hämta alla. Använder en sql-lik query
-                var result = _registryManager.CreateQuery("select * from devices");
-                // får en iquery som resultat - en lista som vi vill loopa igenom
-                if (result.HasMoreResults)
-                    foreach (var device in await result.GetNextAsJsonAsync()) // hämta ut det som ett jsonobjekt
-                        devices.Add(device);                       // spara i en lista av strängar                       
+        //public async Task<IEnumerable<string>> GetDevicesAsJsonAsync()
+        //{
+        //    try
+        //    {
+        //        var devices = new List<string>();
+        //        //här vill vi hämta devices med en query. Hämta alla. Använder en sql-lik query
+        //        var result = _registryManager.CreateQuery("select * from devices");
+        //        // får en iquery som resultat - en lista som vi vill loopa igenom
+        //        if (result.HasMoreResults)
+        //            foreach (var device in await result.GetNextAsJsonAsync()) // hämta ut det som ett jsonobjekt
+        //                devices.Add(device);                       // spara i en lista av strängar                       
 
-                return devices;
-            }
-            catch (Exception ex) { Debug.WriteLine($"{ex.Message}"); }
-            return null!;
-        }  // Metod för att hämta upp alla devices som en lista av jsonobjekt/strängar
-        public async Task<IEnumerable<DeviceItem>> GetDeviceAsJsonAsync()
-        {
-            try
-            {
-                var devices = new List<DeviceItem>();
-                var result = _registryManager.CreateQuery("select * from devices");
-                if (result.HasMoreResults)
-                {
-                    var jsonSerializer = new JsonSerializer();
-                    foreach (var deviceJson in await result.GetNextAsJsonAsync())
-                    {
-                        using (var stringReader = new StringReader(deviceJson))
-                        using (var jsonReader = new JsonTextReader(stringReader))
-                        {
-                            var deviceInfo = jsonSerializer.Deserialize<DeviceItem>(jsonReader);
-                            if (deviceInfo != null)
-                                devices.Add(deviceInfo);
-                        }
-                    }
-                }                                                    
-                return devices;
-            }
-            catch (Exception ex) { Debug.WriteLine($"{ex.Message}"); }
-            return null!;
-        }
+        //        return devices;
+        //    }
+        //    catch (Exception ex) { Debug.WriteLine($"{ex.Message}"); }
+        //    return null!;
+        //}  // Metod för att hämta upp alla devices som en lista av jsonobjekt/strängar
+        //public async Task<IEnumerable<DeviceItem>> GetDeviceAsJsonAsync()
+        //{
+        //    try
+        //    {
+        //        var devices = new List<DeviceItem>();
+        //        var result = _registryManager.CreateQuery("select * from devices");
+        //        if (result.HasMoreResults)
+        //        {
+        //            var jsonSerializer = new JsonSerializer();
+        //            foreach (var deviceJson in await result.GetNextAsJsonAsync())
+        //            {
+        //                using (var stringReader = new StringReader(deviceJson))
+        //                using (var jsonReader = new JsonTextReader(stringReader))
+        //                {
+        //                    var deviceInfo = jsonSerializer.Deserialize<DeviceItem>(jsonReader);
+        //                    if (deviceInfo != null)
+        //                        devices.Add(deviceInfo);
+        //                }
+        //            }
+        //        }                                                    
+        //        return devices;
+        //    }
+        //    catch (Exception ex) { Debug.WriteLine($"{ex.Message}"); }
+        //    return null!;
+        //}
         public async Task<IEnumerable<Twin>> GetDevicesAsTwinAsync(string sqlQuery = "select * from devices") // Metod för att hämta upp alla devices som en lista av Twins
         {
             try
@@ -108,25 +138,24 @@ namespace SharedLibrary.Services
             catch (Exception ex) { Debug.WriteLine($"{ex.Message}"); }
             return null!;
         }
-        public async Task<Twin> GetDeviceAsTwinAsync(string deviceId) 
-        {
-            try
-            {
-                var singleDevice = new Twin();
-                var devices = new List<Twin>(); 
-                var result = _registryManager.CreateQuery("select * from devices");  
-                if (result.HasMoreResults)
-                    foreach (var device in await result.GetNextAsTwinAsync())
-                    {
-                        if(device.DeviceId == deviceId)
-                            singleDevice = device;
-                    }                                          
-                return singleDevice;
-            }
-            catch (Exception ex) { Debug.WriteLine($"{ex.Message}"); }
-            return null!;
-        }
-
+        //public async Task<Twin> GetDeviceAsTwinAsync(string deviceId) 
+        //{
+        //    try
+        //    {
+        //        var singleDevice = new Twin();
+        //        var devices = new List<Twin>(); 
+        //        var result = _registryManager.CreateQuery("select * from devices");  
+        //        if (result.HasMoreResults)
+        //            foreach (var device in await result.GetNextAsTwinAsync())
+        //            {
+        //                if(device.DeviceId == deviceId)
+        //                    singleDevice = device;
+        //            }                                          
+        //        return singleDevice;
+        //    }
+        //    catch (Exception ex) { Debug.WriteLine($"{ex.Message}"); }
+        //    return null!;
+        //}
         public async Task GetAllDevicesAsync()
         {
             try
@@ -149,7 +178,6 @@ namespace SharedLibrary.Services
                             bool isActive = device.Properties.Reported["isActive"];
                             _device.IsActive = isActive;
                         }
-                        //try { _device.IsActive = bool.Parse(!string.IsNullOrEmpty(device.Properties.Reported["isActive"].ToString())); }
                         catch (Exception ex) { Debug.WriteLine($"Fel: {ex.Message}"); }
 
                         Devices.Add(_device); // det kommer in devices med properties som det ska
@@ -181,6 +209,40 @@ namespace SharedLibrary.Services
                 Debug.WriteLine(ex.Message);
                 Debug.WriteLine(ex.StackTrace);
             }
+        }
+        public async Task<Device> GetDeviceAsync(string deviceId)
+        {
+            try
+            {
+                var device = await _registryManager!.GetDeviceAsync(deviceId);
+                if (device != null)
+                    return device;
+            }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
+
+            return null!;
+        }
+        public async Task<Device> RegisterDeviceAsync(string deviceId)
+        {
+            try
+            {
+                var device = await _registryManager!.AddDeviceAsync(new Device(deviceId));
+                if (device != null)
+                    return device;
+            }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
+
+            return null!;
+        }
+        public string GenerateConnectionString(Device device)
+        {
+            try
+            { 
+                return $"{_connectionString.Split(";")[0]};DeviceId={device.Id};SharedAccessKey={device.Authentication.SymmetricKey.PrimaryKey}";
+            }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
+
+            return null!;
         }
     }
 }

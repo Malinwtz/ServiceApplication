@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Models
+namespace DataAccess.Models.Entities
 {
-    public class ApplicationSettings
+    public class AppSettings
     {
-        [Key] 
+        [Key]
         public string ConnectionString { get; set; } = null!; // till vår iot hub
     }
 }

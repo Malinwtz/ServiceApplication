@@ -1,4 +1,4 @@
-﻿using DataAccess.Models;
+﻿using DataAccess.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Contexts
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : DbContext 
     {
         public ApplicationDbContext()
         {
@@ -17,7 +17,7 @@ namespace DataAccess.Contexts
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            // automatiskt skapa databasen
+            // försökrar att DB existerar. 
             Database.EnsureCreated();
             try
             {
@@ -31,7 +31,7 @@ namespace DataAccess.Contexts
             optionsBuilder.UseSqlite();
         }
 
-        public DbSet<ApplicationSettings> Settings { get; set; }
+        public DbSet<AppSettings> Settings { get; set; }
 
     }
 }

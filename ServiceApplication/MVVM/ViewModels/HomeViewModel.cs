@@ -33,6 +33,7 @@ namespace ServiceApplication.MVVM.ViewModels
             _weatherService = weatherService;
             _iotHubManager = iotHubManager;
 
+            // Task.FromResult(_iotHubManager.InitializeAsync());
             UpdateDeviceList();
             UpdateDateAndTime();
             UpdateWeather();
@@ -56,13 +57,9 @@ namespace ServiceApplication.MVVM.ViewModels
         [ObservableProperty]
         private string? _currentTemperatureUnit = "°C";
 
-        //[ObservableProperty]
-        //public ObservableCollection<DeviceItem>? _deviceList;
-
         [ObservableProperty]
         public ObservableCollection<DeviceItemViewModel>? _deviceList;
 
-        // Relay command som ska starta/stoppa enheten med en direct method. 
         [RelayCommand]
         public async Task StartStopButton(DeviceItemViewModel device)
         {
@@ -132,100 +129,5 @@ namespace ServiceApplication.MVVM.ViewModels
             };
         }
 
-        //private async void StartButton_Click(object sender, RoutedEventArgs e)
-        ////object sender - för att hämta ut den data som finns för den här knappen, det här
-        ////objektet. När vi autogenereras ett objekt följer det med metadata som hamnar i
-        ////objectsender. Vi behöver göra om objektet till en knapp.
-        //{
-        //    try
-        //    {
-        //        Button? button = sender as Button; //gör om objektet till en knapp
-        //        if (button != null)
-        //        {
-        //            Twin? twin = button.DataContext as Twin; // datacontext är metadata som är på objektet.
-        //                                                     //Här talar vi om att det här objektet som genererats är av typen twin
-
-        //            if (twin != null)
-        //            {
-        //                string deviceId = twin.DeviceId;
-
-        //                if (!string.IsNullOrEmpty(deviceId))
-        //                    await _iotHubManager.SendMethodAsync(new MethodDataRequest
-        //                    {
-        //                        DeviceId = deviceId,
-        //                        MethodName = "start"
-        //                    });
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex) { Debug.WriteLine(ex.Message); }
-        //}
-        //private async void StopButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        Button? button = sender as Button; //gör om objektet till en knapp
-        //        if (button != null)
-        //        {
-        //            Twin? twin = button.DataContext as Twin; // datacontext är metadata som är på objektet.
-        //                                                     //Det här objektet som genererats är av typen twin
-
-        //            if (twin != null)
-        //            {
-        //                string deviceId = twin.DeviceId;
-
-        //                if (!string.IsNullOrEmpty(deviceId))
-        //                    await _iotHubManager.SendMethodAsync(new MethodDataRequest
-        //                    {
-        //                        DeviceId = deviceId,
-        //                        MethodName = "stop"
-        //                    });
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex) { Debug.WriteLine(ex.Message); }
-        //}
-
-        //private async void StartStopButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        Button? button = sender as Button; //gör om objektet till en knapp
-        //        if (button != null)
-        //        {
-        //            Twin? twin = button.DataContext as Twin; // datacontext är metadata som är på objektet.
-        //                                                     //Här talar i om att det här objektet som genererats är av typen twin
-        //            if (twin != null)
-        //            {
-        //                string deviceId = twin.DeviceId;                        
-        //                if (!string.IsNullOrEmpty(deviceId))
-        //                {
-        //                    var device = _iotHubManager.Devices.FirstOrDefault(x => x.DeviceId == deviceId);
-
-        //                    if (device != null)
-        //                    {
-        //                        if (device.IsActive == true)
-        //                        {
-        //                            await _iotHubManager.SendMethodAsync(new MethodDataRequest
-        //                            {
-        //                                DeviceId = deviceId,
-        //                                MethodName = "stop"
-        //                            });
-        //                        }
-        //                        else
-        //                        {
-        //                            await _iotHubManager.SendMethodAsync(new MethodDataRequest
-        //                            {
-        //                                DeviceId = deviceId,
-        //                                MethodName = "stop"
-        //                            });
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex) { Debug.WriteLine(ex.Message); }
-        //}
     }
 }

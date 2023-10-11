@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using DataAccess.Contexts;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 namespace ServiceApplication.MVVM.ViewModels
@@ -9,8 +10,7 @@ namespace ServiceApplication.MVVM.ViewModels
         public MainWindowViewModel(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-            CurrentViewModel = _serviceProvider.GetRequiredService<HomeViewModel>(); 
-            // Såhär slipper vi lägga in homeviewmodel som en ny instans.
+            CurrentViewModel = _serviceProvider.GetRequiredService<HomeViewModel>();             // Såhär slipper vi lägga in homeviewmodel som en ny instans.
         }
 
 

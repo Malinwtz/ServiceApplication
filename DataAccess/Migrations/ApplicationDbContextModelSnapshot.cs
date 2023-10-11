@@ -16,7 +16,7 @@ namespace DataAccess.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.11");
 
-            modelBuilder.Entity("DataAccess.Models.ApplicationSettings", b =>
+            modelBuilder.Entity("DataAccess.Models.Entities.AppSettings", b =>
                 {
                     b.Property<string>("ConnectionString")
                         .HasColumnType("TEXT");
