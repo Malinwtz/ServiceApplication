@@ -35,9 +35,7 @@ namespace SharedLibrary.Services
            // Task.FromResult(InitializeAsync());
 
             _connectionString = options.IotHubConnectionString;
-            // Initialize();
-            _registryManager = RegistryManager.CreateFromConnectionString(_connectionString);
-            _serviceClient = ServiceClient.CreateFromConnectionString(_connectionString);
+            IsConfigured();
             //_consumerClient = new EventHubConsumerClient(options.ConsumerGroup, options.EventHubEndPoint);
 
             Devices = new List<DeviceItem>();
@@ -47,20 +45,62 @@ namespace SharedLibrary.Services
             _timer.Start();
         }
 
-        public async Task InitializeAsync()
+        public void IsConfigured() // ta bort - test
+        {
+            if (!string.IsNullOrEmpty(_connectionString))
+            {
+                _registryManager = RegistryManager.CreateFromConnectionString(_connectionString);
+                _serviceClient = ServiceClient.CreateFromConnectionString(_connectionString);
+                isConfigured = true;
+            }
+        }
+        public void Initialize(string connectionString = null!) // default = null
         {
             try
             {
-                var settings = await _context.Settings.FirstOrDefaultAsync(); //settings är null 
-                if (settings != null)
+                _connectionString = connectionString;
+
+                if (!isConfigured)
                 {
                     if (!string.IsNullOrEmpty(_connectionString))
                     {
-                        _registryManager = RegistryManager.CreateFromConnectionString(settings.ConnectionString);
-                        _serviceClient = ServiceClient.CreateFromConnectionString(settings.ConnectionString);
+                        _registryManager = RegistryManager.CreateFromConnectionString(_connectionString);
+                        _serviceClient = ServiceClient.CreateFromConnectionString(_connectionString);
                         isConfigured = true;
                     }
                 }
+            }
+            catch (Exception ex) { Debug.Write(ex.Message); }
+        }
+        public async Task InitializeAsync(string connectionString = null!) // default = null
+        {
+            try
+            { 
+                if (!isConfigured) //om programmet inte är konfigurerat körs koden
+                {
+                    if (string.IsNullOrEmpty(_connectionString)) // Finns INGEN connstring kollar vi efter en i databasen 
+                    {
+                        var settings = await _context.Settings.FirstOrDefaultAsync(); //  > settings blir null ... 
+                        if (settings != null)
+                        {
+                            _registryManager = RegistryManager.CreateFromConnectionString(settings.ConnectionString);
+                            _serviceClient = ServiceClient.CreateFromConnectionString(settings.ConnectionString);
+                            isConfigured = true;
+                        }
+                        else
+                        {
+                            // ta bort else - lagt till för att testa
+                            _registryManager = RegistryManager.CreateFromConnectionString(connectionString);
+                            _serviceClient = ServiceClient.CreateFromConnectionString(connectionString);
+                        }
+                    }
+                    else
+                    {
+                        _registryManager = RegistryManager.CreateFromConnectionString(connectionString);
+                        _serviceClient = ServiceClient.CreateFromConnectionString(connectionString);
+                        isConfigured = true;
+                    }
+                }              
             }
             catch (Exception ex) { Debug.Write(ex.Message); }
         }
@@ -237,7 +277,7 @@ namespace SharedLibrary.Services
         public string GenerateConnectionString(Device device)
         {
             try
-            { 
+            {   //tar första delen av hubens connstring - andra delen devicens id - sista delen devicens sharedaccesskey
                 return $"{_connectionString.Split(";")[0]};DeviceId={device.Id};SharedAccessKey={device.Authentication.SymmetricKey.PrimaryKey}";
             }
             catch (Exception ex) { Debug.WriteLine(ex.Message); }
