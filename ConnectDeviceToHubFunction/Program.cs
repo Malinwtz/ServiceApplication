@@ -1,9 +1,7 @@
 using ConnectDeviceToHubFunction.Services;
-using DataAccess.Contexts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SharedLibrary.Services;
 
 var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults()
