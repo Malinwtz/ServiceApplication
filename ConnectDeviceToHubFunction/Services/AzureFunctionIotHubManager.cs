@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ConnectDeviceToHubFunction.Services
 {
-    internal class AzureFunctionIotHubManager
+    public class AzureFunctionIotHubManager
     {
         private readonly string _connectionString = string.Empty;
         private readonly RegistryManager _registryManager;

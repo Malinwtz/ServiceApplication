@@ -1,20 +1,20 @@
 using System.Net;
+using ConnectDeviceToHubFunction.Services;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
-using SharedLibrary.Services;
 
 namespace ConnectDeviceToHubFunction.Actions
 {
     public class DeviceRegistration
     {
-        private readonly IotHubManager _iotHubManager; // ska få tillgång till modeller, services och context-delar
+        private readonly AzureFunctionIotHubManager _iotHubManager; // ska få tillgång till modeller, services och context-delar
 
-        public DeviceRegistration(IotHubManager iotHubManager)
+        public DeviceRegistration(AzureFunctionIotHubManager iotHubManager)
         {
             _iotHubManager = iotHubManager;
-            _iotHubManager.Initialize(
-                "HostName=MalinsIotDevice.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=YtL+BJzB3/jZ63a378FyZzHZw2B89lDzOAIoTFDCNP8=");
+            //_iotHubManager.Initialize(
+            //    "HostName=MalinsIotDevice.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=YtL+BJzB3/jZ63a378FyZzHZw2B89lDzOAIoTFDCNP8=");
         }
 
 
