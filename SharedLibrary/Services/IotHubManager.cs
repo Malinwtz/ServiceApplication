@@ -14,14 +14,14 @@ using System.Timers;
 using Timer = System.Timers.Timer;
 
 namespace SharedLibrary.Services
-{    
+{
     public class IotHubManager
     {
         private string _connectionString = string.Empty;
-        private bool isConfigured;
-        private RegistryManager _registryManager; 
-        private ServiceClient _serviceClient; 
-        private EventHubConsumerClient _consumerClient; 
+      //  private bool isConfigured;
+        private RegistryManager _registryManager;
+        private ServiceClient _serviceClient;
+        private EventHubConsumerClient _consumerClient;
         private readonly Timer _timer;  //using System.Timers;
         public List<DeviceItem> Devices { get; private set; }
         public event Action? DeviceListUpdated;
@@ -31,12 +31,11 @@ namespace SharedLibrary.Services
         public IotHubManager(IotHubManagerOptions options, ApplicationDbContext context)
         {
             _context = context;
-
-           // Task.FromResult(InitializeAsync());
-
             _connectionString = options.IotHubConnectionString;
-            IsConfigured();
-            //_consumerClient = new EventHubConsumerClient(options.ConsumerGroup, options.EventHubEndPoint);
+
+            _registryManager = RegistryManager.CreateFromConnectionString(_connectionString);
+            _serviceClient = ServiceClient.CreateFromConnectionString(_connectionString);
+            //isConfigured = true;
 
             Devices = new List<DeviceItem>();
             Task.Run(GetAllDevicesAsync);
@@ -45,65 +44,65 @@ namespace SharedLibrary.Services
             _timer.Start();
         }
 
-        public void IsConfigured() // ta bort - test
-        {
-            if (!string.IsNullOrEmpty(_connectionString))
-            {
-                _registryManager = RegistryManager.CreateFromConnectionString(_connectionString);
-                _serviceClient = ServiceClient.CreateFromConnectionString(_connectionString);
-                isConfigured = true;
-            }
-        }
-        public void Initialize(string connectionString = null!) // default = null
-        {
-            try
-            {
-                _connectionString = connectionString;
+        //public void IsConfigured() // ta bort - test
+        //{
+        //    if (!string.IsNullOrEmpty(_connectionString))
+        //    {
+        //        _registryManager = RegistryManager.CreateFromConnectionString(_connectionString);
+        //        _serviceClient = ServiceClient.CreateFromConnectionString(_connectionString);
+        //        isConfigured = true;
+        //    }
+        ////}
+        //public void Initialize(string connectionString = null!) // default = null
+        //{
+        //    try
+        //    {
+        //        _connectionString = connectionString;
 
-                if (!isConfigured)
-                {
-                    if (!string.IsNullOrEmpty(_connectionString))
-                    {
-                        _registryManager = RegistryManager.CreateFromConnectionString(_connectionString);
-                        _serviceClient = ServiceClient.CreateFromConnectionString(_connectionString);
-                        isConfigured = true;
-                    }
-                }
-            }
-            catch (Exception ex) { Debug.Write(ex.Message); }
-        }
-        public async Task InitializeAsync(string connectionString = null!) // default = null
-        {
-            try
-            { 
-                if (!isConfigured) //om programmet inte är konfigurerat körs koden
-                {
-                    if (string.IsNullOrEmpty(_connectionString)) // Finns INGEN connstring kollar vi efter en i databasen 
-                    {
-                        var settings = await _context.Settings.FirstOrDefaultAsync(); //  > settings blir null ... 
-                        if (settings != null)
-                        {
-                            _registryManager = RegistryManager.CreateFromConnectionString(settings.ConnectionString);
-                            _serviceClient = ServiceClient.CreateFromConnectionString(settings.ConnectionString);
-                            isConfigured = true;
-                        }
-                        else
-                        {
-                            // ta bort else - lagt till för att testa
-                            _registryManager = RegistryManager.CreateFromConnectionString(connectionString);
-                            _serviceClient = ServiceClient.CreateFromConnectionString(connectionString);
-                        }
-                    }
-                    else
-                    {
-                        _registryManager = RegistryManager.CreateFromConnectionString(connectionString);
-                        _serviceClient = ServiceClient.CreateFromConnectionString(connectionString);
-                        isConfigured = true;
-                    }
-                }              
-            }
-            catch (Exception ex) { Debug.Write(ex.Message); }
-        }
+        //        if (!isConfigured)
+        //        {
+        //            if (!string.IsNullOrEmpty(_connectionString))
+        //            {
+        //                _registryManager = RegistryManager.CreateFromConnectionString(_connectionString);
+        //                _serviceClient = ServiceClient.CreateFromConnectionString(_connectionString);
+        //                isConfigured = true;
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex) { Debug.Write(ex.Message); }
+        //}
+        //public async Task InitializeAsync(string connectionString = null!) // default = null
+        //{
+        //    try
+        //    { 
+        //        if (!isConfigured) //om programmet inte är konfigurerat körs koden
+        //        {
+        //            if (string.IsNullOrEmpty(_connectionString)) // Finns INGEN connstring kollar vi efter en i databasen 
+        //            {
+        //                var settings = await _context.Settings.FirstOrDefaultAsync(); //  > settings blir null ... 
+        //                if (settings != null)
+        //                {
+        //                    _registryManager = RegistryManager.CreateFromConnectionString(settings.ConnectionString);
+        //                    _serviceClient = ServiceClient.CreateFromConnectionString(settings.ConnectionString);
+        //                    isConfigured = true;
+        //                }
+        //                else
+        //                {
+        //                    // ta bort else - lagt till för att testa
+        //                    _registryManager = RegistryManager.CreateFromConnectionString(connectionString);
+        //                    _serviceClient = ServiceClient.CreateFromConnectionString(connectionString);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                _registryManager = RegistryManager.CreateFromConnectionString(connectionString);
+        //                _serviceClient = ServiceClient.CreateFromConnectionString(connectionString);
+        //                isConfigured = true;
+        //            }
+        //        }              
+        //    }
+        //    catch (Exception ex) { Debug.Write(ex.Message); }
+        //}
 
         //metod för att skicka vilken metod som registrerats
         public async Task<CloudToDeviceMethodResult> SendMethodAsync(MethodDataRequest req)
@@ -119,9 +118,9 @@ namespace SharedLibrary.Services
                 var result = await _serviceClient.InvokeDeviceMethodAsync(req.DeviceId, cloudMethod);
                 if (result != null) return result;
             }
-            catch (Exception ex){ Debug.WriteLine(ex.Message); }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
             return null!;
-        }                      
+        }
         //public async Task<IEnumerable<string>> GetDevicesAsJsonAsync()
         //{
         //    try
@@ -214,7 +213,8 @@ namespace SharedLibrary.Services
 
                         //try { _device.DeviceType = device.Properties.Reported["deviceType"].ToString(); }
                         //catch (Exception ex){ Debug.WriteLine($"Fel: {ex.Message}");}
-                        try { 
+                        try
+                        {
                             bool isActive = device.Properties.Reported["isActive"];
                             _device.IsActive = isActive;
                         }
@@ -250,39 +250,39 @@ namespace SharedLibrary.Services
                 Debug.WriteLine(ex.StackTrace);
             }
         }
-        public async Task<Device> GetDeviceAsync(string deviceId)
-        {
-            try
-            {
-                var device = await _registryManager!.GetDeviceAsync(deviceId);
-                if (device != null)
-                    return device;
-            }
-            catch (Exception ex) { Debug.WriteLine(ex.Message); }
+        //public async Task<Device> GetDeviceAsync(string deviceId)
+        //{
+        //    try
+        //    {
+        //        var device = await _registryManager!.GetDeviceAsync(deviceId);
+        //        if (device != null)
+        //            return device;
+        //    }
+        //    catch (Exception ex) { Debug.WriteLine(ex.Message); }
 
-            return null!;
-        }
-        public async Task<Device> RegisterDeviceAsync(string deviceId)
-        {
-            try
-            {
-                var device = await _registryManager!.AddDeviceAsync(new Device(deviceId));
-                if (device != null)
-                    return device;
-            }
-            catch (Exception ex) { Debug.WriteLine(ex.Message); }
+        //    return null!;
+        //}
+        //public async Task<Device> RegisterDeviceAsync(string deviceId)
+        //{
+        //    try
+        //    {
+        //        var device = await _registryManager!.AddDeviceAsync(new Device(deviceId));
+        //        if (device != null)
+        //            return device;
+        //    }
+        //    catch (Exception ex) { Debug.WriteLine(ex.Message); }
 
-            return null!;
-        }
-        public string GenerateConnectionString(Device device)
-        {
-            try
-            {   //tar första delen av hubens connstring - andra delen devicens id - sista delen devicens sharedaccesskey
-                return $"{_connectionString.Split(";")[0]};DeviceId={device.Id};SharedAccessKey={device.Authentication.SymmetricKey.PrimaryKey}";
-            }
-            catch (Exception ex) { Debug.WriteLine(ex.Message); }
+        //    return null!;
+        //}
+        //public string GenerateConnectionString(Device device)
+        //{
+        //    try
+        //    {   //tar första delen av hubens connstring - andra delen devicens id - sista delen devicens sharedaccesskey
+        //        return $"{_connectionString.Split(";")[0]};DeviceId={device.Id};SharedAccessKey={device.Authentication.SymmetricKey.PrimaryKey}";
+        //    }
+        //    catch (Exception ex) { Debug.WriteLine(ex.Message); }
 
-            return null!;
-        }
+        //    return null!;
+        //}
     }
 }

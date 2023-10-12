@@ -1,24 +1,22 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading.Tasks; // timer
 using System.Timers;
 
 namespace ServiceApplication.Services
 {
     public class WeatherService
     {
-        private readonly string _url = "https://api.openweathermap.org/data/2.5/weather?lat=59.1875&lon=18.1232&appid=b4a3119e986341f8f3a4d159c5787679";
-        private readonly Timer _timer;  //using System.Timers;
+      //  private readonly string _url = "https://api.openweathermap.org/data/2.5/weather?lat=59.1875&lon=18.1232&appid=b4a3119e986341f8f3a4d159c5787679";
+        private readonly string _url = "https://api.openweathermap.org/data/2.5/weather?lat=59.32944&lon=18.06861&appid=4f325800efc5078dcc527859127930bb";
+        // api key: 4f325800efc5078dcc527859127930bb
+        // private readonly string _url = "http://api.openweathermap.org/data/2.5/weather?q=Stockholm&appid=4f325800efc5078dcc527859127930bb&units=metric";
+        private readonly Timer _timer;  
         private readonly HttpClient _http; //vill nå ett api med httpclient
         public string? CurrentWeatherCondition { get; private set; }
         public string? CurrentTemperature { get; private set; }
         public event Action? WeatherUpdated;
-
 
         public WeatherService(HttpClient client)
         {
@@ -29,15 +27,14 @@ namespace ServiceApplication.Services
             _timer.Start();
         }
 
-        //metod som är async för att vi ska hämta från api
         private async Task SetCurrentWeatherAsync()
         {
             try
             {
-                // Hämta info från url och gör om till ett dynamiskt objekt    
                 var data = JsonConvert.DeserializeObject<dynamic>(await _http.GetStringAsync(_url));                                                                                                                  
                 CurrentTemperature = (data!.main.temp - 273.15).ToString("#");
-                CurrentWeatherCondition = GetWeatherConditionIcon(data!.weather[0].description.ToString());
+                CurrentWeatherCondition = GetWeatherConditionIcon(data!.weather[0].description.ToString()); 
+                var weatherDescription = (data!.weather[0].icon); // hämtar apiets egen kod för väderikon. 
             }
             catch
             {
@@ -63,21 +60,6 @@ namespace ServiceApplication.Services
                 "mist" => "\uf74e",
                 _ => "\ue137",
             };
-        }
-
-        //private async Task GetInsideTemperature()
-        //{ // För att hämta temperatur från vårt eget api. 
-        //    try
-        //    {
-        //        await Task.Delay(2000);
-        //        var data = JsonConvert.DeserializeObject<dynamic>(await _http.GetStringAsync(_url));
-        //        CurrentTemperature = data!.temperature.ToString();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Debug.WriteLine(ex.Message);
-        //        CurrentTemperature = "--";
-        //    }
-        //}
+        }       
     }
 }

@@ -13,8 +13,6 @@ namespace ConnectDeviceToHubFunction.Actions
         public DeviceRegistration(AzureFunctionIotHubManager iotHubManager)
         {
             _iotHubManager = iotHubManager;
-            //_iotHubManager.Initialize(
-            //    "HostName=MalinsIotDevice.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=YtL+BJzB3/jZ63a378FyZzHZw2B89lDzOAIoTFDCNP8=");
         }
 
 

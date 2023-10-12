@@ -31,8 +31,7 @@ namespace ServiceApplication
                     config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
                 })
                 .ConfigureServices((config, services) =>
-                {
-                    services.AddSingleton<IotHubManager>();
+                {                 
                     services.AddSingleton(new IotHubManagerOptions
                     {
                         IotHubConnectionString = config.Configuration.GetConnectionString("IotHub")!,
@@ -40,7 +39,7 @@ namespace ServiceApplication
                         EventHubName = config.Configuration.GetConnectionString("EventHubName")!,
                         ConsumerGroup = "serviceapplication",
                     });
-
+                    services.AddSingleton<IotHubManager>();
                     //services.AddSingleton(new IotHubManager(new IotHubManagerOptions
                     //{
                     //    IotHubConnectionString = config.Configuration.GetConnectionString("IotHub")!,
@@ -48,13 +47,13 @@ namespace ServiceApplication
                     //    EventHubName = config.Configuration.GetConnectionString("EventHubName")!,
                     //    ConsumerGroup = "serviceapplication",
                     //}));          
-                    
+
                     services.AddDbContext<ApplicationDbContext>(
                         x => x.UseSqlite($"Data Source=Database.sqlite.db", 
                         x=> x.MigrationsAssembly(nameof(DataAccess))));
                     services.AddTransient<HttpClient>();
-                    services.AddSingleton<DateAndTimeService>();
                     services.AddSingleton<WeatherService>();
+                    services.AddSingleton<DateAndTimeService>();
                     services.AddSingleton<MainWindowViewModel>(); 
                     services.AddSingleton<HomeViewModel>();
                     services.AddSingleton<SettingsViewModel>(); 

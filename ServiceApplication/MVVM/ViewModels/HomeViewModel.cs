@@ -34,9 +34,9 @@ namespace ServiceApplication.MVVM.ViewModels
             _iotHubManager = iotHubManager;
 
             // Task.FromResult(_iotHubManager.InitializeAsync());
+            UpdateWeather();
             UpdateDeviceList();
             UpdateDateAndTime();
-            UpdateWeather();
         }
 
         [ObservableProperty]
@@ -103,7 +103,6 @@ namespace ServiceApplication.MVVM.ViewModels
         }
         private void UpdateDateAndTime()
         {
-            // Lyssnar på en action-förändring. Varje gång action förändras så triggar denna 
             _dateAndTimeService.TimeUpdated += () =>
             {
                 CurrentDate = _dateAndTimeService.CurrentDate;
@@ -112,11 +111,11 @@ namespace ServiceApplication.MVVM.ViewModels
         }
         private void UpdateWeather()
         {
-            // Lyssnar på en action-förändring. Varje gång action förändras så triggar
-            // denna 
             _weatherService.WeatherUpdated += () =>
             {
-                CurrentWeatherCondition = _weatherService.CurrentWeatherCondition;
+                // denna kod verkar inte köras
+                //_title = "Hem";
+                CurrentWeatherCondition = _weatherService.CurrentWeatherCondition; // uppdateras inte som de ska
                 CurrentTemperature = _weatherService.CurrentTemperature;
             };
         }
