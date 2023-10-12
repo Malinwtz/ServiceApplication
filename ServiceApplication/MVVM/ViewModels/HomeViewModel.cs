@@ -33,7 +33,6 @@ namespace ServiceApplication.MVVM.ViewModels
             _weatherService = weatherService;
             _iotHubManager = iotHubManager;
 
-            // Task.FromResult(_iotHubManager.InitializeAsync());
             UpdateWeather();
             UpdateDeviceList();
             UpdateDateAndTime();
@@ -113,9 +112,7 @@ namespace ServiceApplication.MVVM.ViewModels
         {
             _weatherService.WeatherUpdated += () =>
             {
-                // denna kod verkar inte köras
-                //_title = "Hem";
-                CurrentWeatherCondition = _weatherService.CurrentWeatherCondition; // uppdateras inte som de ska
+                CurrentWeatherCondition = _weatherService.CurrentWeatherCondition; 
                 CurrentTemperature = _weatherService.CurrentTemperature;
             };
         }

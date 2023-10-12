@@ -21,16 +21,16 @@ namespace SharedLibrary.Services
       //  private bool isConfigured;
         private RegistryManager _registryManager;
         private ServiceClient _serviceClient;
-        private EventHubConsumerClient _consumerClient;
+    //    private EventHubConsumerClient _consumerClient;
         private readonly Timer _timer;  //using System.Timers;
         public List<DeviceItem> Devices { get; private set; }
         public event Action? DeviceListUpdated;
 
-        private readonly ApplicationDbContext _context;
+      //  private readonly ApplicationDbContext _context;
 
-        public IotHubManager(IotHubManagerOptions options, ApplicationDbContext context)
+        public IotHubManager(IotHubManagerOptions options) //, ApplicationDbContext context) // med denna visas inte vädret
         {
-            _context = context;
+           // _context = context;
             _connectionString = options.IotHubConnectionString;
 
             _registryManager = RegistryManager.CreateFromConnectionString(_connectionString);
