@@ -151,8 +151,11 @@ namespace SharedLibrary.Services
                     {
                         var _device = new DeviceItem { DeviceId = device.DeviceId };
 
-                        //try { _device.DeviceType = device.Properties.Reported["deviceType"].ToString(); }
-                        //catch (Exception ex){ Debug.WriteLine($"Fel: {ex.Message}");}
+                        try 
+                        { 
+                            _device.DeviceType = device.Properties.Reported["deviceType"].ToString(); 
+                        }
+                        catch (Exception ex) { Debug.WriteLine($"Fel: {ex.Message}"); }
                         try
                         {
                             bool isActive = device.Properties.Reported["isActive"];
@@ -160,7 +163,7 @@ namespace SharedLibrary.Services
                         }
                         catch (Exception ex) { Debug.WriteLine($"Fel: {ex.Message}"); }
 
-                        Devices.Add(_device); // det kommer in devices med properties som det ska
+                        Devices.Add(_device); 
                         updated = true;
                     }
 

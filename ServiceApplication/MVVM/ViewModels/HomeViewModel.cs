@@ -1,19 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Azure.Devices;
-using Microsoft.Azure.Devices.Shared;
 using Microsoft.Extensions.DependencyInjection;
 using ServiceApplication.Services;
 using SharedLibrary.Models;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows;
 using SharedLibrary.Services;
 
 namespace ServiceApplication.MVVM.ViewModels
@@ -124,6 +118,5 @@ namespace ServiceApplication.MVVM.ViewModels
                     .Select(deviceItem => new DeviceItemViewModel(deviceItem)).ToList());
             };
         }
-
     }
 }

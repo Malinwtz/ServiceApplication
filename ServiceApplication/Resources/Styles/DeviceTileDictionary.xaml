@@ -45,7 +45,7 @@
                                     <Grid>
                                         <StackPanel>
                                             <TextBlock FontFamily="{StaticResource FontAwesome-Regular}" 
-                                                    Text="{Binding Icon, FallbackValue=&#xf2db;}"
+                                                    Text="{Binding DeviceItem.Icon, FallbackValue=&#xf2db;}"
                                                     FontSize="80"
                                                     Foreground="#ffffff"
                                                     Margin="0 0 0 20"/>

@@ -26,8 +26,7 @@ namespace FunctionCosmosDbConnection.Methods
         }
 
         [Function(nameof(SaveDataToCosmosDb))]
-        public async Task Run([EventHubTrigger(
-            "iothub-ehub-malinsiotd-25231991-006434fe96", 
+        public async Task Run([EventHubTrigger("iothub-ehub-malinsiotd-25231991-006434fe96", 
             Connection = "IotHubEndPoint")] EventData[] events)
         {
             foreach (EventData @event in events)
@@ -36,11 +35,10 @@ namespace FunctionCosmosDbConnection.Methods
                 {
                     var json = Encoding.UTF8.GetString(@event.Body.ToArray());  //gör om en bytearray till en läsbar sträng
                     var data = JsonConvert.DeserializeObject<DataMessage>(json);
+                                       
+                    await _container.CreateItemAsync(data, new PartitionKey(data.id));  //data.id = Guid.NewGuid().ToString(); // Set a unique ID 
 
-                    //data.id = Guid.NewGuid().ToString(); // Set a unique ID 
-                    await _container.CreateItemAsync(data, new PartitionKey(data.id));
-
-                    _logger.LogInformation($"Sparade meddelandet: {data}"); //skriver ut json-kod
+                    _logger.LogInformation($"Sparade meddelandet: {data}"); 
                 }
                 catch ( Exception ex )
                 {
@@ -52,5 +50,4 @@ namespace FunctionCosmosDbConnection.Methods
 }
 
 
-// Connstringarna ska ligga i localsettingsfilen. Se tidigare projekt.
 
