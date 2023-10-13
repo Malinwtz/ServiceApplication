@@ -52,9 +52,20 @@
                                             <TextBlock Text="{Binding DeviceItem.DeviceId, FallbackValue=Unknown}" 
                                                     HorizontalAlignment="Center"
                                                     Foreground="#cccccc"/>
-                                            <TextBlock Text="{Binding DeviceItem.IsActive, FallbackValue=Inactive}" 
-                                                    HorizontalAlignment="Center"
-                                                    Foreground="#cccccc"/>
+                                            <TextBlock HorizontalAlignment="Center" Foreground="#cccccc">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding DeviceItem.IsActive}" Value="True">
+                                                                <Setter Property="Text" Value="Active"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding DeviceItem.IsActive}" Value="False">
+                                                                <Setter Property="Text" Value="Inactive"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
                                         </StackPanel>
                                     </Grid>
 
@@ -66,17 +77,14 @@
 
                     <!-- Triggerdel -->
                     <ControlTemplate.Triggers>
-                        <!-- Vi vill trigga när elementet är intryckt/klickat på -->
                         <Trigger Property="IsPressed" Value="True">
-                            <!-- buttonBorder är elementet som kommer att ändras. I det här fallet blir bakgrunden en annan färg. -->
-                            <Setter TargetName="buttonBorder"  
-                                 Property="Background" Value="#7a7a7a" />
+                            <Setter TargetName="buttonBorder" Property="Background" Value="#7a7a7a" />
                         </Trigger>
-                        <!-- En ny trigger som ändrar bakgrundsfärg beroende på IsActive -->
-                        <DataTrigger Binding="{Binding IsActive}" 
-                                  Value="true">
-                            <Setter TargetName="buttonBorder" 
-                                 Property="Background" Value="#7a7a7a" />
+                        <DataTrigger Binding="{Binding IsActive}" Value="true">
+                            <Setter TargetName="buttonBorder" Property="Background" Value="#7a7a7a" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding DeviceItem.IsActive}" Value="true">
+                            <Setter TargetName="buttonBorder" Property="Background" Value="#4D4D4D" />
                         </DataTrigger>
 
                     </ControlTemplate.Triggers>
