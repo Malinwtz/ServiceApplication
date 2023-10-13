@@ -26,7 +26,7 @@ namespace FunctionCosmosDbConnection.Methods
 
         [Function(nameof(SaveDataToCosmosDb))]
         public async Task Run([EventHubTrigger("iothub-ehub-malinsiotd-25231991-006434fe96", 
-            Connection = "IotHubEndPoint")] EventData[] events) // eventdata[] är en array med alla meddelanden som kommit in till huben
+            Connection = "IotHubEndPoint")] EventData[] events) 
         {
             foreach (EventData @event in events)
             {
@@ -49,4 +49,27 @@ namespace FunctionCosmosDbConnection.Methods
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// funktion som sparar ner alla meddelanden (events) från huben till cosmosDb
+// eventdata[] är en array med alla meddelanden som kommit in till huben
 
