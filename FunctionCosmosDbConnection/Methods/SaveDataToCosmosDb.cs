@@ -18,7 +18,6 @@ namespace FunctionCosmosDbConnection.Methods
         public SaveDataToCosmosDb(ILogger<SaveDataToCosmosDb> logger)
         {
             _logger = logger;
-
             _cosmosClient = new CosmosClient(
                 "AccountEndpoint=https://malins-cosmosdb.documents.azure.com:443/;AccountKey=jUj74N15medMT2LhBOkqpMPGsGJcFMp5M97k69zTeylT2GqCyl9NNuSr5XikuIASKqSicp8cfVvAACDbA8JCjg==;");
             var database = _cosmosClient.GetDatabase("deviceDb");
@@ -27,7 +26,7 @@ namespace FunctionCosmosDbConnection.Methods
 
         [Function(nameof(SaveDataToCosmosDb))]
         public async Task Run([EventHubTrigger("iothub-ehub-malinsiotd-25231991-006434fe96", 
-            Connection = "IotHubEndPoint")] EventData[] events)
+            Connection = "IotHubEndPoint")] EventData[] events) // eventdata[] är en array med alla meddelanden som kommit in till huben
         {
             foreach (EventData @event in events)
             {
